@@ -1,12 +1,18 @@
-# deslop skill
+# Documentation skills
 
-A Claude skill that rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial).
+A collection of Claude skills for technical documentation work. Each skill lives under `skills/<name>/` with its own `SKILL.md`, reference material, and eval suite.
+
+## Available skills
+
+| Skill | Description |
+| --- | --- |
+| [deslop](skills/deslop/) | Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial). |
 
 ## Folder layout
 
 ```
 .
-├── skills/                  # Skill sources
+├── skills/                  # Skill sources, one directory per skill
 │   ├── deslop/              # The deslop skill
 │   │   ├── SKILL.md         # Skill definition: trigger description + rewrite workflow
 │   │   ├── references/      # Rule catalogs loaded on demand (phrases, structures,
@@ -22,21 +28,38 @@ A Claude skill that rewrites technical product documentation to strip AI slop an
 └── README.md                # This file
 ```
 
-## Run the skill
+## Install a skill
 
 ### In Claude Code
 
-Install the skill by copying it into your skills directory:
+Copy a skill into your skills directory:
 
 ```sh
 # Personal (all projects)
-cp -R skills/deslop ~/.claude/skills/deslop
+cp -R skills/<name> ~/.claude/skills/<name>
 
 # Or per-project
-cp -R skills/deslop <project>/.claude/skills/deslop
+cp -R skills/<name> <project>/.claude/skills/<name>
 ```
 
-Then invoke it in a session, either explicitly:
+### On claude.ai
+
+Upload the packaged `skills/<name>.skill` file under **Settings → Capabilities → Skills**.
+
+A `.skill` package is a snapshot of the skill's `SKILL.md` + `references/`. If you edit the skill source, repackage it:
+
+```sh
+cd skills
+zip -r <name>.skill <name> -x "<name>/evals/*" "*/.DS_Store"
+```
+
+## deslop
+
+Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial).
+
+### Run the skill
+
+Invoke it in a session, either explicitly:
 
 ```
 /deslop docs/getting-started.md
@@ -44,22 +67,11 @@ Then invoke it in a session, either explicitly:
 
 or implicitly — the skill triggers on phrases like "deslop this", "make this doc less AI-sounding", "tighten my draft", or "rewrite this in CTRT", with pasted text or a file path (`.md`, `.mdx`, `.rst`, `.adoc`, `.txt`, `.docx`).
 
-### On claude.ai
-
-Upload `skills/deslop.skill` under **Settings → Capabilities → Skills**, then ask Claude to deslop pasted text or an attached file.
-
-Note: `deslop.skill` is a snapshot of `skills/deslop/SKILL.md` + `references/`. If you edit the skill source, repackage it:
-
-```sh
-cd skills
-zip -r deslop.skill deslop -x "deslop/evals/*" "*/.DS_Store"
-```
-
-### Scope
+#### Scope
 
 Technical documentation only: concept/task/reference/troubleshooting pages, runbooks, tutorials, release notes, product READMEs. The skill refuses marketing copy, blog posts, and social posts by design.
 
-## Run the evals
+### Run the evals
 
 Each case in `skills/deslop/evals/evals.json` has an `id`, a `name`, the exact `prompt` handed to the skill (a salted doc plus the real facts the rewrite needs, so the model never invents technical content), an `expected_output` that names every rule a good rewrite satisfies, and `files` for file-based inputs (paths relative to `skills/deslop/evals/`).
 
@@ -70,7 +82,7 @@ The suite is two tiers:
 
 `test-inputs/` also holds standalone salted docs covering each topic type (concept, task, CLI reference, troubleshooting, tutorial, runbook), usable for ad-hoc runs ("deslop this file") or for new file-based cases.
 
-### Quick manual run (any environment)
+#### Quick manual run (any environment)
 
 For a single case: open `evals.json`, copy a case's `prompt` into a session where the skill is installed, and compare the output against the case's `expected_output` — it names every rule the rewrite should satisfy.
 
@@ -80,7 +92,7 @@ For the file-based case (eval 1) and ad-hoc testing, point the skill at a salted
 /deslop skills/deslop/evals/test-inputs/troubleshooting.md
 ```
 
-### Full run (Claude Code, subagent fan-out)
+#### Full run (Claude Code, subagent fan-out)
 
 Run each case in a fresh subagent so cases don't contaminate each other:
 
@@ -89,7 +101,7 @@ Run each case in a fresh subagent so cases don't contaminate each other:
 3. Collect each rewrite + change summary into a `workspace/results-<date>/` directory as `results.json` (a list of `{id, name, rewrite, summary}` entries).
 4. Grade with `workspace/grade.py` (substring/structure assertions), or review manually against `expected_output`.
 
-### Self-test the eval suite
+#### Self-test the eval suite
 
 `workspace/verify_evals.py` checks that the assertions themselves are sound: for every eval, a known-good rewrite (from the recorded passing run) passes 100%, and the original slop fed back as the "rewrite" fails. Run it after editing assertions:
 
