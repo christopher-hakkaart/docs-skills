@@ -1,0 +1,29 @@
+Deslop this, paying attention to structural patterns, sentence joins, and punctuation. Return the rewritten text and a short change summary.
+
+```
+## Token handling.
+
+This isn't a bug. It's a design decision. Not slow. Not broken. Just misunderstood.
+
+Why does retry behavior matter? Because runs fail. It retries fast. It retries quietly. It retries every time. The result? Resilient, reliable, robust pipelines. That's it. That's the feature.
+
+Despite these challenges, the scheduler continues to scale. From small scripts to enterprise empires, the run decides when to fail and the metrics tell us why. The first wall is quota. The second wall is networking. The third wall is logging. This is the observability gap, underscoring its role as a critical component. Like a conductor leading an orchestra, the platform orchestrates everything. AWS didn't solve this. Google didn't solve this. Stripe didn't solve this.
+
+In this section, we'll cover three benefits. Every user always wants faster runs — nobody wants to wait.
+
+- **Performance**: Runs start in under 30 seconds → on a warm environment.
+- **Reliability**: Tasks retry automatically — yes, automatically — up to three times.
+- **Security**: Credentials are encrypted at rest.
+
+So performance is fast. Now reliability is high. But security is strong. As discussed in this section, the platform is fast, reliable, and secure. Fast runs save time. Quick runs save effort. Speedy runs help everyone.
+
+The access token expires after an hour, so refresh it before a run; the schema is cached, which means changes need a restart. There's one rule: keep tokens short-lived.
+
+Set these:
+
+- the "--profile" flag
+- region, work directory and max CPUs
+- enable retries.
+```
+
+Facts: failed tasks retry automatically up to 3 times, with exponential backoff starting at 30 seconds. Runs fail when the account hits its vCPU quota; the platform checks the quota before submitting jobs and queues the run if the quota is exceeded. Keep the three bullet facts (start time, retries, encryption). Tokens expire after 1 hour; the schema cache requires a restart after changes. The flag is `--profile`.

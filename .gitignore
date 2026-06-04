@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+
+# Claude Code local settings
+**/.claude/settings.local.json
+
+# Built skill packages (regenerable from skills/<name>/ source)
+*.skill

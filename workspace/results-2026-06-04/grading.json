@@ -1,0 +1,502 @@
+{
+  "eval-1-file-release-notes": {
+    "summary": {
+      "pass_rate": 1.0,
+      "passed": 11,
+      "failed": 0,
+      "total": 11
+    },
+    "expectations": [
+      {
+        "text": "Removes marketing intro (absolutely thrilled, significant milestone, most powerful)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes 'In conclusion' / 'quantum leap'",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes 'fundamentally transform', 'blazing fast', 'rapidly evolving'",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Includes specific perf numbers (12s, 4s, p99)",
+        "passed": true,
+        "evidence": "All present: ['12s', '4s', 'p99']"
+      },
+      {
+        "text": "Includes issue numbers (#1842, #1856, #1871)",
+        "passed": true,
+        "evidence": "All present: ['#1842', '#1856', '#1871']"
+      },
+      {
+        "text": "Names security mechanisms (SAML, OIDC, RBAC)",
+        "passed": true,
+        "evidence": "All present: ['saml', 'oidc', 'rbac']"
+      },
+      {
+        "text": "Mentions WORM audit logging",
+        "passed": true,
+        "evidence": "Found: ['worm']"
+      },
+      {
+        "text": "Documents breaking change (--token, --output)",
+        "passed": true,
+        "evidence": "All present: ['--token', '--output']"
+      },
+      {
+        "text": "Links to migration guide URL",
+        "passed": true,
+        "evidence": "Found: ['docs.seqera.io/platform-cloud/migrate/24.1']"
+      },
+      {
+        "text": "Rewrite is shorter than the original",
+        "passed": true,
+        "evidence": "rewrite 145 words < original 378 words"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "9 bullets, 6 with counts/numbers"
+      }
+    ]
+  },
+  "eval-2-phrases-rule-family": {
+    "summary": {
+      "pass_rate": 1.0,
+      "passed": 13,
+      "failed": 0,
+      "total": 13
+    },
+    "expectations": [
+      {
+        "text": "Removes throat-clearing and meta openers (here's the thing, it's worth noting, keep in mind, in this section, let's dive, in conclusion)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes marketing adjectives and AI vocabulary (powerful, comprehensive, best-in-class, cutting-edge, game-changer, cornerstone, ecosystem, supercharge, delve, tapestry)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes sales verbs (empower, leverage, democratize, streamline)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes padding and nominalizations (in order to, due to the fact that, basically, perform the configuration, and so on)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes vague attributions and declaratives (experts argue, industry reports suggest, it is widely believed, the implications are significant)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Rewrites product-as-subject phrasing (allows you to, enables you to, gives you the ability)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes non-inclusive terms (sanity check, dummy value, whitelist, master branch)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Keeps the credential sentences rewritten with inclusive replacements (placeholder, allowlist, main branch)",
+        "passed": true,
+        "evidence": "All present: ['placeholder', 'allowlist', 'main branch']"
+      },
+      {
+        "text": "States the two real release changes (cost reporting, bulk relaunch)",
+        "passed": true,
+        "evidence": "All present: ['cost reporting', 'bulk relaunch']"
+      },
+      {
+        "text": "Names the execution backends (AWS Batch, Azure Batch, Google Cloud Batch, Kubernetes, HPC)",
+        "passed": true,
+        "evidence": "All present: ['aws batch', 'azure batch', 'google cloud batch', 'kubernetes', 'hpc']"
+      },
+      {
+        "text": "Replaces 'click here' with descriptive link text",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Rewrite is shorter than the original",
+        "passed": true,
+        "evidence": "rewrite 137 words < original 297 words"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "11 bullets, 4 with counts/numbers"
+      }
+    ]
+  },
+  "eval-3-structures-rule-family": {
+    "summary": {
+      "pass_rate": 1.0,
+      "passed": 18,
+      "failed": 0,
+      "total": 18
+    },
+    "expectations": [
+      {
+        "text": "Removes false drama (binary contrast, negative listing, dramatic fragmentation, self-posed questions)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes anaphora and the tricolon (it retries fast / resilient, reliable, robust)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes formulas (despite these challenges, false range, invented concept label, dead metaphor, participle tag)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes historical analogy stacking (AWS/Google/Stripe didn't solve this)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes the fractal summary (in this section we'll cover / as discussed in this section)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Replaces lazy extremes (every user always, nobody wants)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Collapses the one-point dilution (fast/quick/speedy runs)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "States the real retry behavior (3 times, exponential backoff, 30 seconds)",
+        "passed": true,
+        "evidence": "All present: ['3 times', 'exponential backoff', '30 seconds']"
+      },
+      {
+        "text": "States the quota-check behavior (vCPU quota, queues the run)",
+        "passed": true,
+        "evidence": "All present: ['vcpu quota', 'queue']"
+      },
+      {
+        "text": "Keeps the token expiry and schema-restart facts (1 hour, restart)",
+        "passed": true,
+        "evidence": "All present: ['1 hour', 'restart']"
+      },
+      {
+        "text": "Removes the unicode arrow and decorative em-dash aside",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes the semicolon join",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Puts the flag in backticks (`--profile`)",
+        "passed": true,
+        "evidence": "Found: ['`--profile`']"
+      },
+      {
+        "text": "Adds the Oxford comma in the settings list",
+        "passed": true,
+        "evidence": "Found: ['work directory, and']"
+      },
+      {
+        "text": "Removes the terminal period from the heading",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes bold-first bullet leads",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Rewrite is shorter than the original",
+        "passed": true,
+        "evidence": "rewrite 128 words < original 253 words"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "10 bullets, 5 with counts/numbers"
+      }
+    ]
+  },
+  "eval-4-style-terminology-clarity-rule-family": {
+    "summary": {
+      "pass_rate": 0.9285714285714286,
+      "passed": 26,
+      "failed": 2,
+      "total": 28
+    },
+    "expectations": [
+      {
+        "text": "Applies the word-choice cheatsheet (utilize, e.g., can not, log in, click all removed)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses the preferred terms (sign in, cannot, select)",
+        "passed": true,
+        "evidence": "All present: ['sign in', 'cannot', 'select']"
+      },
+      {
+        "text": "Replaces vague claims with specifics (12s, 4s, Google Cloud Batch)",
+        "passed": true,
+        "evidence": "All present: ['12s', '4s', 'google cloud batch']"
+      },
+      {
+        "text": "Converts passive to active voice (is submitted by, will be generated, should be run, is performed)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes subject-hiding constructions (there are several, it is recommended)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Cuts culture-specific idioms (rocket science, don't sweat it)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Replaces the real-looking token and email with placeholders",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses placeholder values (<your_access_token>, example.com)",
+        "passed": true,
+        "evidence": "All present: ['<your_access_token>', 'example.com']"
+      },
+      {
+        "text": "Fixes the gerund title (Configuring The Compute Environment)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes bold from headings and the skipped H4 level",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Bolds the Launch button label",
+        "passed": true,
+        "evidence": "Found: ['**Launch**']"
+      },
+      {
+        "text": "Breaks up the noun string (project integration custom settings)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses long forms over contractions in the Notes",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Replaces 'Tower' with Seqera Platform",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses the product name Seqera Platform",
+        "passed": true,
+        "evidence": "Found: ['seqera platform']"
+      },
+      {
+        "text": "Corrects product casing (NextFlow -> Nextflow, multiQC -> MultiQC)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses the correct product names (Nextflow, MultiQC)",
+        "passed": true,
+        "evidence": "All present: ['Nextflow', 'MultiQC']"
+      },
+      {
+        "text": "Lowercases the feature nouns (Credentials, Compute Environments, Workspace)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Spells out abbreviations on first use (HPC, GCP)",
+        "passed": false,
+        "evidence": "Missing: ['high-performance computing (hpc)', 'google cloud platform (gcp)']"
+      },
+      {
+        "text": "Puts the environment variable in backticks",
+        "passed": true,
+        "evidence": "Found: ['`tower_access_token`']"
+      },
+      {
+        "text": "Defines 'executor' on first use with examples (AWS Batch, Kubernetes)",
+        "passed": true,
+        "evidence": "All present: ['executor', 'aws batch', 'kubernetes']"
+      },
+      {
+        "text": "Fixes pipeline vs workflow (the pipeline failed/fails to launch)",
+        "passed": true,
+        "evidence": "Found: ['pipeline fails to launch']"
+      },
+      {
+        "text": "Removes the mistyped workflow/executions/job terms",
+        "passed": false,
+        "evidence": "Found in rewrite: ['executions']"
+      },
+      {
+        "text": "Corrects and bolds the UI names (Launchpad, Data Explorer, Runs)",
+        "passed": true,
+        "evidence": "All present: ['**Launchpad**', '**Data Explorer**', '**Runs**']"
+      },
+      {
+        "text": "Removes the wrong UI names (Launch Pad, data explorer)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Puts code identifiers in backticks (--profile, nextflow.config)",
+        "passed": true,
+        "evidence": "All present: ['`--profile`', '`nextflow.config`']"
+      },
+      {
+        "text": "Summary names the terminology fixes",
+        "passed": true,
+        "evidence": "In summary: ['terminolog']"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "11 bullets, 10 with counts/numbers"
+      }
+    ]
+  },
+  "eval-5-topic-types-rule-family": {
+    "summary": {
+      "pass_rate": 1.0,
+      "passed": 20,
+      "failed": 0,
+      "total": 20
+    },
+    "expectations": [
+      {
+        "text": "Retitles the Concept with a noun title (Workspaces, not Overview)",
+        "passed": true,
+        "evidence": "Found: ['# Workspaces']"
+      },
+      {
+        "text": "Removes the Overview framing and the Summary section",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Splits out a Task (Create a workspace) with a prerequisites list",
+        "passed": true,
+        "evidence": "All present: ['create a workspace', 'prerequisite']"
+      },
+      {
+        "text": "Uses imperative numbered steps (not 'you should click')",
+        "passed": true,
+        "evidence": "Found: ['1. ']"
+      },
+      {
+        "text": "Removes the hedged step phrasing (you should click, you navigate, you can enter)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Replaces 'click' with 'select' and bolds the UI labels",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Bolds the New and Add buttons",
+        "passed": true,
+        "evidence": "All present: ['**New**', '**Add**']"
+      },
+      {
+        "text": "Converts the settings into a table with the 256 default",
+        "passed": true,
+        "evidence": "All present: ['|', '256']"
+      },
+      {
+        "text": "Removes the prose narrative between settings rows",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Moves the error into the troubleshooting title with an Error: prefix",
+        "passed": true,
+        "evidence": "All present: ['error:', 'accessdenied']"
+      },
+      {
+        "text": "Names the single cause and drops the hedging and chat",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Gives a numbered resolution with the s3:PutObject fix",
+        "passed": true,
+        "evidence": "All present: ['s3:putobject', 'resolv']"
+      },
+      {
+        "text": "Uses the Tutorial: title prefix",
+        "passed": true,
+        "evidence": "Found: ['tutorial:']"
+      },
+      {
+        "text": "Removes the inflated tutorial title and journey framing",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Includes a Before you begin section",
+        "passed": true,
+        "evidence": "Found: ['before you begin']"
+      },
+      {
+        "text": "Uses active-verb tutorial section headings",
+        "passed": true,
+        "evidence": "All present: ['set up the compute environment', 'review the']"
+      },
+      {
+        "text": "Uses an active-verb launch heading",
+        "passed": true,
+        "evidence": "Found: ['launch the pipeline']"
+      },
+      {
+        "text": "Folds in or relinks the More info stub",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Summary names all five topic types",
+        "passed": true,
+        "evidence": "In summary: ['concept', 'task', 'reference', 'troubleshooting', 'tutorial']"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "8 bullets, 5 with counts/numbers"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+Deslop this concept page — heavy rewrite. Return the rewritten text and a short change summary.
+
+```
+# Compute environments
+
+Here's the thing: a compute environment is where your pipelines actually run. It's worth noting that this is one of the most important concepts to understand. In this section, we'll explore what compute environments are and why they matter.
+
+Let's dive in. A compute environment defines the cloud or HPC backend, the credentials, and the work directory for a run. Keep in mind that you can have more than one.
+
+Seqera Platform is a powerful, comprehensive, best-in-class solution that empowers teams to leverage cutting-edge automation. It serves as the cornerstone of a modern bioinformatics ecosystem and helps democratize access to scalable compute. This release is a game-changer that will fundamentally reshape how your team thinks about pipeline orchestration. Let's delve into the rich tapestry of new capabilities that streamline your workflows and supercharge productivity.
+
+In order to configure a compute environment, you basically need to perform the configuration of your credentials first. Due to the fact that the platform supports a number of providers, experts argue that you should really just pick the one closest to your data. The implications are significant. Industry reports suggest that misconfigured credentials cause numerous failures, and so on. It is widely believed that doing the validation of your settings early helps.
+
+The platform allows you to store credentials centrally, and this feature enables you to connect to cloud storage. The system gives you the ability to validate them before any run. Validation acts as a sanity check on the stored values, unset optional fields fall back to a dummy value, the platform only reads from buckets on the whitelist, and pipelines track the master branch of their repository by default. For more information, [click here](#).
+
+In conclusion, compute environments are the foundation of running pipelines on Seqera Platform.
+```
+
+Facts to keep: a compute environment defines the execution backend (AWS Batch, Azure Batch, Google Cloud Batch, Kubernetes, or an HPC scheduler), the credentials used to access it, and the work directory for pipeline runs. A workspace can hold multiple compute environments. The release adds run-level cost reporting and a bulk relaunch action — use these instead of the hype. Configure credentials before the compute environment; supported providers are AWS, Azure, and Google Cloud. Validating credentials before a run surfaces permission errors at setup instead of at launch. Stored credentials connect Seqera Platform to cloud storage; validation checks the stored values before any run; unset optional fields fall back to placeholder values; Seqera Platform reads only from buckets on the storage allowlist; pipelines track the main branch of their repository by default. The destination of the link is the credentials reference page.

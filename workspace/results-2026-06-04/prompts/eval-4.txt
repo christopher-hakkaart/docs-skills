@@ -1,0 +1,23 @@
+Deslop this Seqera Platform task page, applying the house style guide, terminology rules, and clarity rules. This is current documentation (not legacy). Return the rewritten text and a short change summary.
+
+```
+# Configuring The Compute Environment
+
+## **Step 1: Log In**
+
+Utilize the form to log in, e.g. with your email. Since the token is missing, you can not launch a run. Set TOWER_ACCESS_TOKEN to authenticate. Click the `Launch` button to start.
+
+The job is submitted to AWS Batch by Tower. A new access token will be generated and the migration should be run before the upgrade is performed. The new release is significantly faster and supports various providers, which should improve things for a number of users. Runs use HPC or GCP backends.
+
+The platform stores your Credentials and Compute Environments per Workspace. The executor runs the NextFlow pipeline tasks automatically. When you configure a compute environment you need to ensure that the credentials you are using have the appropriate permissions for the cloud provider, which typically means access to create and manage instances, storage, and networking resources for the run. The executor and the scheduler then coordinate.
+
+The workflow failed to launch from the Launch Pad. Open the data explorer, then check the executions in the runs tab and view the multiQC report. Set the --profile flag and open nextflow.config. Each job ran on its own node.
+
+#### Notes
+
+There are several project integration custom settings. It is recommended that it be configured early. When it fails, controlling the retry logic helps, but don't sweat it — it's not rocket science. You will utilize these settings later.
+
+For testing, use token sk-1a2b3c-real-looking-secret and email admin@acme-corp.com.
+```
+
+Facts: this is a task page; the page title supplies the H1. The UI button label is **Launch**. The release reduces run-submission p99 latency from 12s to 4s and adds support for Google Cloud Batch (joining AWS Batch and Azure Batch). An executor is the system that runs pipeline tasks (for example AWS Batch or Kubernetes). The credentials need permission to create and manage instances, storage, and networking. The failed item is a Platform pipeline (a runnable Launchpad item), not Nextflow code. The reader is looking at a single pipeline execution made of units of work. The Notes section is reference material, so prefer long forms over contractions there. Treat the example token and email as fake info to replace.

@@ -1,0 +1,11 @@
+- Classified as **Concept** (defines what a compute environment is and why it matters; no task steps, kept as explanatory prose).
+- Cut throat-clearing, hedging, pedagogical, and self-referential openers (7: "Here's the thing", "It's worth noting that", "In this section, we'll explore", "Let's dive in", "Let's delve into", "Keep in mind that", "experts argue that").
+- Cut the entire marketing/hype paragraph (powerful, comprehensive, best-in-class, empowers, leverage, cutting-edge, cornerstone, ecosystem, democratize, game-changer, fundamentally reshape, rich tapestry, streamline, supercharge). Replaced the vague "rich tapestry of new capabilities" with the two real release facts: run-level cost reporting and a bulk relaunch action.
+- Cut vague attributions and declaratives ("The implications are significant", "Industry reports suggest", "It is widely believed", "and so on").
+- Fixed padding and nominalizations (4: "in order to" → "to", "perform the configuration of" → "configure", "due to the fact that" → "because" then cut, "doing the validation of" → "validating"). Removed filler adverbs ("basically", "really").
+- Replaced customer-perspective tells: "the platform allows you to" / "enables you to" / "gives you the ability to" → direct statements; "the platform" → **Seqera Platform**.
+- Replaced non-inclusive terms (3): "dummy value" → placeholder, "whitelist" → allowlist, "master branch" → main.
+- Fixed vague link text "[click here]" → "See the [credentials reference](#)".
+- Cut the "In conclusion" signposted closing paragraph (it restated the opening).
+- Reduced length ~62% (300 → 113 words).
+- Flagged for review: the line "This release adds run-level cost reporting and a bulk relaunch action" is release-note content embedded in a concept page. If a release-notes or changelog page exists, move it there; a standing concept page should not anchor a feature to "this release".

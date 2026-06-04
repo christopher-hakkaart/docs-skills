@@ -1,0 +1,9 @@
+Read test-inputs/release-notes.md (relative to this evals directory) and rewrite it heavily — strip the AI slop, follow technical writing style guidelines, and return both the rewritten doc (as a new file with .deslopped before the extension) and a short summary of what you changed.
+
+For the specific facts that the rewrite needs (since the original is intentionally vague), use these realistic stand-ins:
+- Run submission: p99 latency to AWS Batch compute environments dropped from 12s to 4s (issue #1842)
+- Launchpad: the pipeline list now loads through a paginated query, ~3x faster for workspaces with more than 1000 pipelines (issue #1856)
+- Data Explorer: bucket listing batches storage API calls instead of issuing them sequentially (issue #1871)
+- Security: SAML 2.0 and OIDC single sign-on added; RBAC with 5 built-in roles plus custom roles; audit log writes to S3 with optional WORM retention
+- Breaking: the deprecated `tw --token` flag is removed (set `TOWER_ACCESS_TOKEN` instead); the CLI default output format is now `table` (was JSON), set with `--output`
+- Migration guide URL: https://docs.seqera.io/platform-cloud/migrate/24.1

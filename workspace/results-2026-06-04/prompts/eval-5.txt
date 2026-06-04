@@ -1,0 +1,34 @@
+Deslop and re-type this multi-section doc. It contains a mistyped overview, a settings reference, a troubleshooting section, and a walkthrough. Return the rewritten text and a short change summary.
+
+```
+# Overview
+
+Workspaces organize your work. This overview will help you understand them.
+
+You should make sure you have an organization first. Then, to create a workspace: 1) you navigate to the organization, 2) you should click New, 3) you can enter a name.
+
+## Summary
+
+That's how workspaces work!
+
+# Settings
+
+region is the AWS region. It's really important to choose this carefully because it affects latency.
+workDir is the work directory.
+maxCpus is the max CPUs. As mentioned, this matters for cost.
+
+# Launch problems
+
+Sometimes things go wrong when you launch. Don't worry! If you see an access denied message, it might be due to a variety of factors.
+
+# Pipeline Walkthrough - A Complete And Exhaustive End To End Guide To Everything
+
+In today's fast-paced world, let's embark on an exciting journey together that will transform how you work!
+
+You need an account. First you set up a compute environment. Then you launch nf-core/rnaseq. Finally you review results.
+
+## More info
+See the other page.
+```
+
+Facts: a workspace groups pipelines, compute environments, and credentials for a team. Prerequisite: an organization. To create one: go to the organization, select **New**, enter a name, then select **Add**. Settings: region has no default; workDir has no default; maxCpus defaults to 256. The troubleshooting case: the error is `AccessDenied (Service: S3, Status Code: 403)`; cause is that the compute environment credentials lack write access to the work-directory bucket; resolution is to grant the credentials `s3:PutObject` on that bucket and relaunch. The tutorial sets up an AWS Batch compute environment, launches the nf-core/rnaseq pipeline, and reviews results in the **Runs** tab; prerequisites are a Seqera Platform account and workspace, AWS credentials, and an S3 bucket for the work directory; outcome is a completed rnaseq run.
