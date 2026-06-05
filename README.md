@@ -7,6 +7,7 @@ A collection of Claude skills for technical documentation work. Each skill lives
 | Skill | Description |
 | --- | --- |
 | [deslop](skills/deslop/) | Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial). |
+| [format](skills/format/) | Applies Seqera docs house formatting conventions to a page or selection. Each formatting area (prerequisites, troubleshooting placement, …) has its own reference file. |
 
 ## Folder layout
 
@@ -20,7 +21,12 @@ A collection of Claude skills for technical documentation work. Each skill lives
 │   │   └── evals/           # Eval suite
 │   │       ├── evals.json   # 5 eval cases (schema and tiers below)
 │   │       └── test-inputs/ # Salted input docs for file-based testing
-│   └── deslop.skill         # Packaged skill (zip of deslop/, minus evals) for claude.ai
+│   ├── deslop.skill         # Packaged skill (zip of deslop/, minus evals) for claude.ai
+│   ├── format/              # The format skill
+│   │   ├── SKILL.md         # Skill definition: trigger + formatting-area index
+│   │   └── references/      # One reference per formatting area (prerequisites,
+│   │                        # troubleshooting, …)
+│   └── format.skill         # Packaged skill (zip of format/) for claude.ai
 ├── workspace/               # Eval harness and run artifacts
 │   ├── grade.py             # Substring/structure assertions for grading eval output
 │   ├── verify_evals.py      # Self-test: ideal rewrites pass, original slop fails
@@ -115,3 +121,28 @@ of `{id, name, rewrite, summary}` entries) and run it. It prints a per-eval and 
 scorecard and writes `grading.json` into the run directory. Originals for the pasted
 evals are extracted from the fenced block in each prompt in `evals.json`; eval 1
 reads its test-input file. Run entries with no matching assertion set are skipped.
+
+## format
+
+Applies Seqera docs house formatting conventions to a page or a selected region — the structural, repeatable parts of a page, kept consistent across the docs. It is about structure, not prose; for wording and slop, use `deslop`. The two compose: when `deslop` runs on a Seqera page with prerequisites, it hands off to `format`.
+
+### Run the skill
+
+Invoke it explicitly:
+
+```
+/format docs/getting-started.md
+```
+
+or implicitly — the skill triggers on requests to format, clean up, standardize, or fix the structure of a docs page, or when writing a new guide/tutorial that must follow house format.
+
+### Formatting areas
+
+Each area has its own reference file under `skills/format/references/`. The skill reads the reference for the area in scope and applies its spec.
+
+| Area | Reference | Covers |
+| --- | --- | --- |
+| Prerequisites | `references/prerequisites.md` | The `:::info[**Prerequisites**]` admonition, `You need the following:` lead-in, noun-phrase bullets. |
+| Troubleshooting | `references/troubleshooting.md` | Moving inline troubleshooting sections to the product's `troubleshooting_and_faqs/` pages (new page or existing). |
+
+Add a row here and a reference file when you codify a new convention.

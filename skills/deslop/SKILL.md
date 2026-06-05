@@ -31,7 +31,7 @@ Do **not** use this skill on:
 
 If the user asks to deslop something that is clearly marketing or a blog post, say so and stop. The catalog of rules below is calibrated for documentation voice, not for prose that is supposed to persuade or entertain.
 
-## The four-step workflow
+## The five-step workflow
 
 **1. Read the source.** If the user pasted text, use it. If they referenced a file path, read the **entire** file before editing — an in-place rewrite must not drop content it never saw. For .docx, follow the docx skill's reading guidance.
 
@@ -46,6 +46,13 @@ If the user asks to deslop something that is clearly marketing or a blog post, s
 **When the page title lives outside the body, the body gets no H1.** If frontmatter `title:` exists, or the user states that the page title supplies the H1, apply any title rename to that supplied title and **remove** the body H1 rather than renaming it. The title-rename rules (active verb + noun, `Tutorial:` prefix, etc.) never justify keeping or adding a body H1 — start the body at H2.
 
 **4. Return two artifacts.** First the rewritten text, then a short change summary that names the topic type(s) and the categories of changes. Exact output format is below.
+
+**5. Format with the `structure` skill.** On Seqera pages, two structural conventions are owned by the `structure` skill, and deslop must delegate both — **invoke it** (Skill tool, `skill: "structure"`) whenever either element is in scope:
+
+- **Prerequisites** — a prerequisites list, or a top-of-page block that mixes the intro with prerequisites, is reformatted in place per the `structure` skill's `references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition, a `You need the following:` lead-in, and noun-phrase bullets. Never use deslop's generic `Prerequisites:` heading on a Seqera page.
+- **Troubleshooting placement** — inline troubleshooting content (a `## Troubleshooting` section, error/symptom → cause → fix entries, "If you see…" recovery procedures) moves **off** concept, task, reference, and tutorial pages to the product's dedicated troubleshooting pages per the `structure` skill's `references/troubleshooting.md` (for example, `platform-cloud/docs/troubleshooting_and_faqs/`), leaving a one-line pointer on the source page. There is no minimum size — a single inline entry triggers the move. This **overrides** the generic "split out at five or more entries" rule in `topic-types.md`.
+
+This step is mandatory, not optional polish — do not skip it because the section looks small, the page is "mostly fine", or you already read one of the `structure` references. Read **both** of the `structure` skill's reference files that apply before deciding nothing needs to move. If the Skill tool is unavailable in the current environment, apply the conventions inline yourself as a fallback. Either way, report the conversions, moves, and any removed anchors in the change summary (artifact 2), extending it if it was already delivered.
 
 ## The core rewrite rules
 
@@ -87,6 +94,8 @@ Each type has its own structural and stylistic conventions. These are the highes
 
 See `references/topic-types.md` for the per-type rules.
 
+**Prerequisites and troubleshooting are special on Seqera docs — hand off to the `structure` skill.** Deslop's job is to detect them and delegate; the `structure` skill owns both conventions and is the single source of truth. Prerequisites are reformatted in place; inline troubleshooting moves off the page entirely, no matter how few entries it has. See step 5 of the workflow for the full handoff rules.
+
 ### 6. Cut hard
 
 A heavy rewrite of a slop-heavy draft typically removes 20–40% of the words. Treat that as the expected outcome for bloated input, not a quota to hit on every input. If the source is already tight — a clean sentence, a well-built reference table, the small scoped selection from step 1 — the right cut may be zero (see rule 7 and Example 8). Don't pad, reorder, or paraphrase good prose just to register a change. When the input *is* bloated, the biggest sources of LLM bloat in docs are:
@@ -123,6 +132,7 @@ Run these against **your rewritten output**, not the input — a heavy rewrite r
 - Does the title match its topic type (noun for concept/reference, active verb + noun for task/tutorial, error message for troubleshooting reference)?
 - Are there numbered steps inside a concept? (They belong in a task.)
 - Are there marketing intros above a reference table? (Cut them or move to a concept.)
+- For Seqera guides/tutorials with prerequisites: are they in a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets (not a numbered list, not a plain `Prerequisites:` heading)? (Step 5; the `structure` skill's `references/prerequisites.md`.)
 - Did you wrap a table around content that isn't a parallel-attribute lookup? Release notes, changelogs, and chronological lists are bulleted lists, not tables. (See `topic-types.md`.)
 - Are there em-dashes used as decorative pauses?
 - Are two clauses joined with ", so" (or ", which means", ", thus")? Split them or lead with the cause.
@@ -264,6 +274,8 @@ Read these as needed. Pull in the ones relevant to the topic type and the patter
 - `references/style-guide.md` — the cross-cutting technical writing style rules (active voice, present tense, customer perspective, word choice)
 - `references/terminology.md` — **Seqera Platform-specific** terminology and formatting (product/tool names, lowercase feature nouns, pipeline vs workflow, run vs task, bold vs backticks, UI names, env vars)
 - `references/examples.md` — longer before/after passages across the topic types
+
+**Related skill:** for Seqera docs, two structural conventions are owned by the `structure` skill, and deslop must delegate both (Skill tool, `skill: "structure"`; see step 5 of the workflow): **prerequisites** (`references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets, never deslop's generic `Prerequisites:` heading) and **troubleshooting placement** (`references/troubleshooting.md`: inline troubleshooting moves off feature pages to the product's `troubleshooting_and_faqs/` pages with a pointer link left behind — even a single entry).
 
 ## A note on judgment
 
