@@ -7,7 +7,7 @@ A collection of Claude skills for technical documentation work. Each skill lives
 | Skill | Description |
 | --- | --- |
 | [deslop](skills/deslop/) | Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial). |
-| [format](skills/format/) | Applies Seqera docs house formatting conventions to a page or selection. Each formatting area (prerequisites, troubleshooting placement, …) has its own reference file. |
+| [structure](skills/structure/) | Applies Seqera docs house structural conventions to a page or selection. Each structural area (prerequisites, troubleshooting placement, …) has its own reference file. |
 
 ## Folder layout
 
@@ -19,14 +19,14 @@ A collection of Claude skills for technical documentation work. Each skill lives
 │   │   ├── references/      # Rule catalogs loaded on demand (phrases, structures,
 │   │   │                    # style-guide, terminology, clarity, topic-types, examples)
 │   │   └── evals/           # Eval suite
-│   │       ├── evals.json   # 5 eval cases (schema and tiers below)
+│   │       ├── evals.json   # 8 eval cases (schema and tiers below)
 │   │       └── test-inputs/ # Salted input docs for file-based testing
 │   ├── deslop.skill         # Packaged skill (zip of deslop/, minus evals) for claude.ai
-│   ├── format/              # The format skill
-│   │   ├── SKILL.md         # Skill definition: trigger + formatting-area index
-│   │   └── references/      # One reference per formatting area (prerequisites,
+│   ├── structure/           # The structure skill
+│   │   ├── SKILL.md         # Skill definition: trigger + structural-area index
+│   │   └── references/      # One reference per structural area (prerequisites,
 │   │                        # troubleshooting, …)
-│   └── format.skill         # Packaged skill (zip of format/) for claude.ai
+│   └── structure.skill      # Packaged skill (zip of structure/) for claude.ai
 ├── workspace/               # Eval harness and run artifacts
 │   ├── grade.py             # Substring/structure assertions for grading eval output
 │   ├── verify_evals.py      # Self-test: ideal rewrites pass, original slop fails
@@ -77,14 +77,24 @@ or implicitly — the skill triggers on phrases like "deslop this", "make this d
 
 Technical documentation only: concept/task/reference/troubleshooting pages, runbooks, tutorials, release notes, product READMEs. The skill refuses marketing copy, blog posts, and social posts by design.
 
+### Modes
+
+deslop runs as an aggressive in-place heavy rewrite by default. Two optional modes adjust that, and they combine:
+
+- **Passive mode** — light-touch. Applies only word- and sentence-level fixes (slop phrases, marketing language, voice, tense, punctuation, terminology) and leaves structure alone: no splitting topics, renaming titles, moving troubleshooting, or reshaping tables. Structural changes a full rewrite would make are instead listed in the change summary under a `Recommend (full mode):` block. Trigger with "passive", "light-touch", "words only", or "don't restructure".
+- **Verbose mode** — changes only the change summary, not what gets edited. Each significant edit is shown as a `before → after` pair grouped by the rule that triggered it, instead of grouped category counts. Trigger with "verbose", "explain each change", or "show before/after".
+
+The active mode is named on the first line of the change summary (`Mode: passive`, `Mode: verbose`, or `Mode: passive + verbose`). For the full spec, see the "Modes" section of [`skills/deslop/SKILL.md`](skills/deslop/SKILL.md).
+
 ### Run the evals
 
 Each case in `skills/deslop/evals/evals.json` has an `id`, a `name`, the exact `prompt` handed to the skill (a salted doc plus the real facts the rewrite needs, so the model never invents technical content), an `expected_output` that names every rule a good rewrite satisfies, and `files` for file-based inputs (paths relative to `skills/deslop/evals/`).
 
-The suite is two tiers:
+The suite is three tiers:
 
 - **Tier 1 — integrated scenario (eval 1, `file-release-notes`)**: an end-to-end deslop that mixes rule families and is the only case exercising file read/write — it reads `test-inputs/release-notes.md` and writes a `.deslopped` copy.
 - **Tier 2 — rule-family coverage (evals 2–5)**: one salted document per reference file (or pair) — `phrases` (2), `structures` (3), `style-terminology-clarity` (4), `topic-types` (5). Collectively they cover every rule in `references/`, so the suite stays cheap to run.
+- **Tier 3 — mode coverage (evals 6–8)**: one case per mode behavior — `passive-mode-light-touch` (6) checks that word-level fixes apply while structural changes are flagged not made, `verbose-mode-before-after-summary` (7) checks the per-edit before/after summary format, and `passive-plus-verbose-combined` (8) checks the two modes compose (see [Modes](#modes)). These are graded manually against `expected_output`; `grade.py`'s assertions cover evals 1–5 only.
 
 `test-inputs/` also holds standalone salted docs covering each topic type (concept, task, CLI reference, troubleshooting, tutorial, runbook), usable for ad-hoc runs ("deslop this file") or for new file-based cases.
 
@@ -115,30 +125,30 @@ Run each case in a fresh subagent so cases don't contaminate each other:
 python3 workspace/verify_evals.py
 ```
 
-`grade.py` covers all 5 evals and grades the flat run layout: point its `ITERATION`
+`grade.py` covers evals 1–5 (the integrated and rule-family cases) and grades the flat run layout: point its `ITERATION`
 constant at a `workspace/results-<date>/` directory containing `results.json` (a list
 of `{id, name, rewrite, summary}` entries) and run it. It prints a per-eval and overall
 scorecard and writes `grading.json` into the run directory. Originals for the pasted
 evals are extracted from the fenced block in each prompt in `evals.json`; eval 1
 reads its test-input file. Run entries with no matching assertion set are skipped.
 
-## format
+## structure
 
-Applies Seqera docs house formatting conventions to a page or a selected region — the structural, repeatable parts of a page, kept consistent across the docs. It is about structure, not prose; for wording and slop, use `deslop`. The two compose: when `deslop` runs on a Seqera page with prerequisites, it hands off to `format`.
+Applies Seqera docs house structural conventions to a page or a selected region — the structural, repeatable parts of a page, kept consistent across the docs. It is about structure, not prose; for wording and slop, use `deslop`. The two compose: when `deslop` runs on a Seqera page with prerequisites, it hands off to `structure`.
 
 ### Run the skill
 
 Invoke it explicitly:
 
 ```
-/format docs/getting-started.md
+/structure docs/getting-started.md
 ```
 
 or implicitly — the skill triggers on requests to format, clean up, standardize, or fix the structure of a docs page, or when writing a new guide/tutorial that must follow house format.
 
-### Formatting areas
+### Structural areas
 
-Each area has its own reference file under `skills/format/references/`. The skill reads the reference for the area in scope and applies its spec.
+Each area has its own reference file under `skills/structure/references/`. The skill reads the reference for the area in scope and applies its spec.
 
 | Area | Reference | Covers |
 | --- | --- | --- |

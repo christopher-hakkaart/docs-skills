@@ -1,6 +1,6 @@
 ---
 name: deslop
-description: Rewrite technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting) plus Tutorial. Use whenever the user wants to deslop, tighten, edit, or rewrite technical docs — concept pages, task / how-to pages, reference material (API, CLI, config tables), troubleshooting pages, runbooks, tutorials, release notes, or product README sections. Trigger on phrases like "deslop", "make this doc less AI-sounding", "edit this docs page", "tighten my draft", or "rewrite this in CTRT", whether the user pastes prose or points at a file (.md, .mdx, .rst, .adoc, .txt, .docx). Scope is product/technical documentation only — do not use for marketing copy, blog posts, social posts, or general prose. Default behavior is to classify the input by topic type, then apply a heavy rewrite per the type-specific rules. Always return the rewritten text plus a short summary naming the topic type(s) and the changes made.
+description: Rewrite technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting) plus Tutorial. Use whenever the user wants to deslop, tighten, edit, or rewrite technical docs — concept pages, task / how-to pages, reference material (API, CLI, config tables), troubleshooting pages, runbooks, tutorials, release notes, or product README sections. Trigger on phrases like "deslop", "make this doc less AI-sounding", "edit this docs page", "tighten my draft", or "rewrite this in CTRT", whether the user pastes prose or points at a file (.md, .mdx, .rst, .adoc, .txt, .docx). Scope is product/technical documentation only — do not use for marketing copy, blog posts, social posts, or general prose. Default behavior is to classify the input by topic type, then apply a heavy rewrite per the type-specific rules. Supports an optional passive mode (light-touch: word- and sentence-level fixes only, no restructuring — trigger on "passive", "light-touch", "words only", "don't restructure") and an optional verbose mode (change summary shows each edit as a before/after pair with the rule that triggered it — trigger on "verbose", "explain each change", "show before/after"); the two modes combine. Always return the rewritten text plus a short summary naming the topic type(s) and the changes made.
 ---
 
 # Deslop for technical documentation
@@ -8,6 +8,8 @@ description: Rewrite technical product documentation to strip AI slop and confor
 Strip AI patterns from technical product documentation and bring each topic in line with the CTRT topic-type model: Concept, Task, Reference, Troubleshooting (plus Tutorial as a fifth page-level type). The goal is documentation that a tired engineer can scan at 11pm and act on.
 
 This skill is **opinionated** and **aggressive**. The default mode is a heavy rewrite — restructure freely, split mistyped topics, cut hard. Lean on the rules below; deviate only when the source meaning would be lost.
+
+Two optional modes adjust this default: **passive mode** limits the rewrite to safe word- and sentence-level fixes (no restructuring), and **verbose mode** expands the change summary into per-edit before/after pairs. See [Modes](#modes) before starting — the mode changes which rules you apply and how you report them.
 
 ## Scope: this is for technical documentation only
 
@@ -30,6 +32,56 @@ Do **not** use this skill on:
 - Tweets about engineering culture
 
 If the user asks to deslop something that is clearly marketing or a blog post, say so and stop. The catalog of rules below is calibrated for documentation voice, not for prose that is supposed to persuade or entertain.
+
+## Modes
+
+deslop runs in **full mode** by default — the aggressive in-place heavy rewrite this file describes. Two optional modes change that behavior. Detect the mode from the user's request, and name the active mode in the first line of the change summary (`Mode: passive`, `Mode: verbose`, `Mode: passive + verbose`, or nothing for full mode). The two modes are independent and combine.
+
+### Passive mode
+
+Trigger phrases: "passive", "passive mode", "light-touch", "light touch", "safe edits only", "words only", "don't restructure", "--passive".
+
+Passive mode still edits the file in place, but limits the rewrite to **word- and sentence-level fixes that cannot change the document's meaning, structure, or navigation.** Use it when the user wants the prose cleaned up without the page reshaped — for example, on a doc that is already correctly typed and well-organized but reads like an LLM wrote it.
+
+**Apply (the safe set):**
+
+- Cut slop phrases, throat-clearing, hedges, padding, filler adverbs, and nominalizations (`phrases.md`)
+- Swap marketing adjectives and sales verbs for plain words (`phrases.md`, `style-guide.md`)
+- Fix passive → active voice, future → present tense, and product-as-subject → customer perspective (`style-guide.md`)
+- Fix loose connectors and punctuation: `, so` / `, which means` joins, semicolons, mid-sentence colons, decorative em-dashes, Unicode decoration (`structures.md`)
+- Split sentences over ~30 words (`clarity.md`)
+- Correct terminology, product-name spelling, and bold-vs-backticks in place (`terminology.md`)
+
+**Do not (the structural set — full mode only):**
+
+- Split a mistyped topic into separate typed sections
+- Rename a title (no active-verb + noun rewrite, no `Tutorial:` prefix, no body-H1 removal)
+- Convert prose to a table or a table to a list, or reshape a body into symptom → cause → fix
+- Move or reformat content: no troubleshooting moves, no prerequisites reformat, no hoisting prose out of a reference
+- Add, remove, reorder, or cut whole headings or sections (including a "Conclusion" or "Summary" section)
+
+When passive mode suppresses a change that full mode would make, **flag it in the change summary as a recommendation** instead of doing it — for example, "Recommend (full mode): split the embedded numbered steps into a separate Task section." Step 5 (the `structure` skill handoff) becomes detect-and-recommend only: name what should move or reformat, but leave it in place.
+
+The cut-hard expectation (core rule 6) still holds for the words within a sentence, but passive mode will usually cut less than full mode because it can't drop whole sections. Don't manufacture structural changes to hit a cut target.
+
+### Verbose mode
+
+Trigger phrases: "verbose", "verbose mode", "explain each change", "show before/after", "--verbose".
+
+Verbose mode changes **only Artifact 2**, not what you edit. Instead of the scannable 3–7 category bullets, list each significant change as a `before → after` pair with the rule that triggered it, grouped by reference file or change category:
+
+> **Mode: verbose** · Classified as **Task**
+>
+> _Active voice (`style-guide.md`):_
+> - "The job is submitted by the runner" → "The runner submits the job"
+>
+> _Sales verbs (`phrases.md`):_
+> - "leverage the API" → "use the API"
+>
+> _Loose connector (`structures.md`):_
+> - "The token expires hourly, so refresh it" → "The token expires hourly. Refresh it before each run."
+
+Keep the classification line, and still report every summary-only obligation (glossary candidates, dropped unsupported claims, renamed-heading anchor flags). Collapse trivial repeated swaps into one entry with a count (`cut "just" ×6`) rather than listing each occurrence. The goal is a complete accounting of the edits, not noise.
 
 ## The five-step workflow
 
@@ -54,9 +106,13 @@ If the user asks to deslop something that is clearly marketing or a blog post, s
 
 This step is mandatory, not optional polish — do not skip it because the section looks small, the page is "mostly fine", or you already read one of the `structure` references. Read **both** of the `structure` skill's reference files that apply before deciding nothing needs to move. If the Skill tool is unavailable in the current environment, apply the conventions inline yourself as a fallback. Either way, report the conversions, moves, and any removed anchors in the change summary (artifact 2), extending it if it was already delivered.
 
+**In passive mode**, this step is detect-and-recommend only: identify the prerequisites and inline troubleshooting that should be reformatted or moved, name them in the change summary as recommendations, but leave the content in place. Don't invoke the `structure` skill to perform the moves (see [Modes](#modes)).
+
 ## The core rewrite rules
 
 These apply to every topic type. The type-specific rules layer on top.
+
+**In passive mode**, apply only the word- and sentence-level rules (rules 2, 4, part of 6, 7, 8). Rule 1 still runs — classify, because the type drives word choice and the recommendations you flag — but its structural consequences (splitting, renaming, hoisting) are suppressed. Rule 3 applies only to the loose-connector and punctuation fixes, not to reshaping paragraphs. Rule 5 becomes recommend-only. See [Modes](#modes).
 
 ### 1. Classify before rewriting
 
@@ -120,6 +176,8 @@ If you do not know what a flag, command, or term does, leave the original wordin
 
 Run these against **your rewritten output**, not the input — a heavy rewrite routinely introduces fresh slop (a new `, so` join, a table that doesn't fit, a semicolon) while compressing the original. Read your own draft as if someone else wrote it. Any "yes" answer means another revision.
 
+**In passive mode**, the structural checks below (classification split, renamed headings, body-H1 removal, marketing intros above tables, prerequisites reformat, table-vs-list reshape) become "did you *flag* this as a recommendation?" rather than "did you *do* it?" — passive mode reports the structural problem, it doesn't fix it. The word- and sentence-level checks (slop phrases, connectors, punctuation, voice, tense, terminology, abbreviations) apply unchanged. **In verbose mode**, also confirm Artifact 2 lists each significant edit as a before → after pair with its triggering rule.
+
 - Did you classify each section into one of Concept / Task / Reference / Troubleshooting / Tutorial?
 - Did you actually deliver **both** artifacts — the rewritten text **and** the change summary (Artifact 2)? The summary is required every time, including short pasted snippets. Delivering the rewrite alone is an incomplete response.
 - For a file input, did you edit the original file in place (not create a separate copy)?
@@ -162,6 +220,8 @@ If the rewrite splits the input into multiple typed topics, use clear `##` headi
 ### Artifact 2 — the change summary
 
 A scannable list of three to seven bullets. The first bullet **must** name the topic type(s) you classified the input as. The rest name the categories of change, with counts where possible.
+
+When a mode is active, prefix the summary with a mode line (`Mode: passive`, `Mode: verbose`, or `Mode: passive + verbose`). **In passive mode**, add the structural changes you suppressed as a `Recommend (full mode):` block so the user knows what a full rewrite would do. **In verbose mode**, replace the category bullets with per-edit `before → after` pairs grouped by triggering rule — see the example in [Modes](#modes).
 
 The summary is also where the **summary-only obligations** live — items that change nothing in the rewrite text but must still be reported: glossary candidates for terms that recur undefined (`clarity.md`), claims dropped as unsupported rather than reworded (the never-invent rule), and renamed headings whose anchors will break inbound links.
 
