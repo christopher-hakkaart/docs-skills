@@ -176,6 +176,8 @@ If you do not know what a flag, command, or term does, leave the original wordin
 
 Run these against **your rewritten output**, not the input — a heavy rewrite routinely introduces fresh slop (a new `, so` join, a table that doesn't fit, a semicolon) while compressing the original. Read your own draft as if someone else wrote it. Any "yes" answer means another revision.
 
+Do this as a **plain read of every sentence**, not only a match against the word lists. The catalogs in `phrases.md` and `structures.md` are not exhaustive — colloquial verbs (`grab`, `spin up`, `hit`, `dig into`) and other informal register slip past a list-only scan. Read the whole file, **including admonition blocks** (`:::tip`, `:::note`, `:::info`), which are easy to skip because they look like settled asides.
+
 **In passive mode**, the structural checks below (classification split, renamed headings, body-H1 removal, marketing intros above tables, prerequisites reformat, table-vs-list reshape) become "did you *flag* this as a recommendation?" rather than "did you *do* it?" — passive mode reports the structural problem, it doesn't fix it. The word- and sentence-level checks (slop phrases, connectors, punctuation, voice, tense, terminology, abbreviations) apply unchanged. **In verbose mode**, also confirm Artifact 2 lists each significant edit as a before → after pair with its triggering rule.
 
 - Did you classify each section into one of Concept / Task / Reference / Troubleshooting / Tutorial?
@@ -197,6 +199,7 @@ Run these against **your rewritten output**, not the input — a heavy rewrite r
 - Are there semicolons, or colons used mid-sentence (not introducing a list, steps, or label)? Replace with periods.
 - Is any technical term used before it's defined on the page, or any sentence over ~30 words? (See `clarity.md`.)
 - Are there any phrases from `references/phrases.md` still present?
+- Are there colloquial or informal verbs (`grab`, `spin up`, `hit`, `dig into`, `kick off`)? Swap for the plain verb — and check inside admonition blocks, not just body prose. (See "Colloquial / informal verbs" in `phrases.md`.)
 - Is there passive voice where an actor could be named?
 - Is there future tense ("will create") where present tense works ("creates")?
 - Is anything described in vague marketing terms ("powerful", "robust", "seamless")?

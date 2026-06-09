@@ -180,6 +180,23 @@ Replace with the plain word.
 | when it comes to            | (delete or "for")                 |
 | in today's [X] landscape    | (delete)                          |
 
+## Colloquial / informal verbs
+
+These read as conversational filler in documentation voice. They are not in the lists above, so a catalog-only scan misses them — catch them on a plain read of the prose (including admonition blocks like `:::tip` and `:::note`). Swap for the plain, precise verb.
+
+| Avoid                        | Use instead                          |
+| ---------------------------- | ------------------------------------ |
+| grab (a token, a command)    | copy, get                            |
+| spin up                      | start, create, launch                |
+| dig into / dive into         | examine, look at                     |
+| hit (an endpoint, a limit)   | call, send a request to; reach       |
+| jump to / hop over to        | go to, see                           |
+| kick off                     | start, run, trigger                  |
+| tweak                        | adjust, change                       |
+| wire up                      | connect, configure                   |
+
+These are context-dependent — a single one in tutorial prose can be fine (tutorials run friendlier). The tell is informal register in reference, task, or troubleshooting docs where the reader wants the precise verb.
+
 ## The "serves as" dodge
 
 AI replaces simple "is" or "are" with pompous alternatives. Use the simple verb.
