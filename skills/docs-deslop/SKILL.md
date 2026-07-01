@@ -1,6 +1,6 @@
 ---
-name: deslop
-description: Rewrite technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting) plus Tutorial. Use whenever the user wants to deslop, tighten, edit, or rewrite technical docs — concept pages, task / how-to pages, reference material (API, CLI, config tables), troubleshooting pages, runbooks, tutorials, release notes, or product README sections. Trigger on phrases like "deslop", "make this doc less AI-sounding", "edit this docs page", "tighten my draft", or "rewrite this in CTRT", whether the user pastes prose or points at a file (.md, .mdx, .rst, .adoc, .txt, .docx). Scope is product/technical documentation only — do not use for marketing copy, blog posts, social posts, or general prose. Default behavior is to classify the input by topic type, then apply a heavy rewrite per the type-specific rules. Supports an optional passive mode (light-touch: word- and sentence-level fixes only, no restructuring — trigger on "passive", "light-touch", "words only", "don't restructure") and an optional verbose mode (change summary shows each edit as a before/after pair with the rule that triggered it — trigger on "verbose", "explain each change", "show before/after"); the two modes combine. Always return the rewritten text plus a short summary naming the topic type(s) and the changes made.
+name: docs-deslop
+description: "Rewrite technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting) plus Tutorial. Use whenever the user wants to deslop, tighten, edit, or rewrite technical docs — concept pages, task / how-to pages, reference material (API, CLI, config tables), troubleshooting pages, runbooks, tutorials, release notes, or product README sections. Trigger on phrases like \"deslop\", \"make this doc less AI-sounding\", \"edit this docs page\", \"tighten my draft\", or \"rewrite this in CTRT\", whether the user pastes prose or points at a file (.md, .mdx, .rst, .adoc, .txt, .docx). Scope is product/technical documentation only — do not use for marketing copy, blog posts, social posts, or general prose. Default behavior is to classify the input by topic type, then apply a heavy rewrite per the type-specific rules. Supports an optional passive mode (light-touch: word- and sentence-level fixes only, no restructuring — trigger on \"passive\", \"light-touch\", \"words only\", \"don't restructure\") and an optional verbose mode (change summary shows each edit as a before/after pair with the rule that triggered it — trigger on \"verbose\", \"explain each change\", \"show before/after\"); the two modes combine. Always return the rewritten text plus a short summary naming the topic type(s) and the changes made."
 ---
 
 # Deslop for technical documentation
@@ -60,7 +60,7 @@ Passive mode still edits the file in place, but limits the rewrite to **word- an
 - Move or reformat content: no troubleshooting moves, no prerequisites reformat, no hoisting prose out of a reference
 - Add, remove, reorder, or cut whole headings or sections (including a "Conclusion" or "Summary" section)
 
-When passive mode suppresses a change that full mode would make, **flag it in the change summary as a recommendation** instead of doing it — for example, "Recommend (full mode): split the embedded numbered steps into a separate Task section." Step 5 (the `structure` skill handoff) becomes detect-and-recommend only: name what should move or reformat, but leave it in place.
+When passive mode suppresses a change that full mode would make, **flag it in the change summary as a recommendation** instead of doing it — for example, "Recommend (full mode): split the embedded numbered steps into a separate Task section." Step 5 (the `docs-structure` skill handoff) becomes detect-and-recommend only: name what should move or reformat, but leave it in place.
 
 The cut-hard expectation (core rule 6) still holds for the words within a sentence, but passive mode will usually cut less than full mode because it can't drop whole sections. Don't manufacture structural changes to hit a cut target.
 
@@ -99,14 +99,14 @@ Keep the classification line, and still report every summary-only obligation (gl
 
 **4. Return two artifacts.** First the rewritten text, then a short change summary that names the topic type(s) and the categories of changes. Exact output format is below.
 
-**5. Format with the `structure` skill.** On Seqera pages, two structural conventions are owned by the `structure` skill, and deslop must delegate both — **invoke it** (Skill tool, `skill: "structure"`) whenever either element is in scope:
+**5. Format with the `docs-structure` skill.** On Seqera pages, two structural conventions are owned by the `docs-structure` skill, and deslop must delegate both — **invoke it** (Skill tool, `skill: "docs-structure"`) whenever either element is in scope:
 
-- **Prerequisites** — a prerequisites list, or a top-of-page block that mixes the intro with prerequisites, is reformatted in place per the `structure` skill's `references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition, a `You need the following:` lead-in, and noun-phrase bullets. Never use deslop's generic `Prerequisites:` heading on a Seqera page.
-- **Troubleshooting placement** — inline troubleshooting content (a `## Troubleshooting` section, error/symptom → cause → fix entries, "If you see…" recovery procedures) moves **off** concept, task, reference, and tutorial pages to the product's dedicated troubleshooting pages per the `structure` skill's `references/troubleshooting.md` (for example, `platform-cloud/docs/troubleshooting_and_faqs/`), leaving a one-line pointer on the source page. There is no minimum size — a single inline entry triggers the move. This **overrides** the generic "split out at five or more entries" rule in `topic-types.md`.
+- **Prerequisites** — a prerequisites list, or a top-of-page block that mixes the intro with prerequisites, is reformatted in place per the `docs-structure` skill's `references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition, a `You need the following:` lead-in, and noun-phrase bullets. Never use deslop's generic `Prerequisites:` heading on a Seqera page.
+- **Troubleshooting placement** — inline troubleshooting content (a `## Troubleshooting` section, error/symptom → cause → fix entries, "If you see…" recovery procedures) moves **off** concept, task, reference, and tutorial pages to the product's dedicated troubleshooting pages per the `docs-structure` skill's `references/troubleshooting.md` (for example, `platform-cloud/docs/troubleshooting_and_faqs/`), leaving a one-line pointer on the source page. There is no minimum size — a single inline entry triggers the move. This **overrides** the generic "split out at five or more entries" rule in `topic-types.md`.
 
-This step is mandatory, not optional polish — do not skip it because the section looks small, the page is "mostly fine", or you already read one of the `structure` references. Read **both** of the `structure` skill's reference files that apply before deciding nothing needs to move. If the Skill tool is unavailable in the current environment, apply the conventions inline yourself as a fallback. Either way, report the conversions, moves, and any removed anchors in the change summary (artifact 2), extending it if it was already delivered.
+This step is mandatory, not optional polish — do not skip it because the section looks small, the page is "mostly fine", or you already read one of the `docs-structure` references. Read **both** of the `docs-structure` skill's reference files that apply before deciding nothing needs to move. If the Skill tool is unavailable in the current environment, apply the conventions inline yourself as a fallback. Either way, report the conversions, moves, and any removed anchors in the change summary (artifact 2), extending it if it was already delivered.
 
-**In passive mode**, this step is detect-and-recommend only: identify the prerequisites and inline troubleshooting that should be reformatted or moved, name them in the change summary as recommendations, but leave the content in place. Don't invoke the `structure` skill to perform the moves (see [Modes](#modes)).
+**In passive mode**, this step is detect-and-recommend only: identify the prerequisites and inline troubleshooting that should be reformatted or moved, name them in the change summary as recommendations, but leave the content in place. Don't invoke the `docs-structure` skill to perform the moves (see [Modes](#modes)).
 
 ## The core rewrite rules
 
@@ -150,7 +150,7 @@ Each type has its own structural and stylistic conventions. These are the highes
 
 See `references/topic-types.md` for the per-type rules.
 
-**Prerequisites and troubleshooting are special on Seqera docs — hand off to the `structure` skill.** Deslop's job is to detect them and delegate; the `structure` skill owns both conventions and is the single source of truth. Prerequisites are reformatted in place; inline troubleshooting moves off the page entirely, no matter how few entries it has. See step 5 of the workflow for the full handoff rules.
+**Prerequisites and troubleshooting are special on Seqera docs — hand off to the `docs-structure` skill.** Deslop's job is to detect them and delegate; the `docs-structure` skill owns both conventions and is the single source of truth. Prerequisites are reformatted in place; inline troubleshooting moves off the page entirely, no matter how few entries it has. See step 5 of the workflow for the full handoff rules.
 
 ### 6. Cut hard
 
@@ -192,7 +192,7 @@ Do this as a **plain read of every sentence**, not only a match against the word
 - Does the title match its topic type (noun for concept/reference, active verb + noun for task/tutorial, error message for troubleshooting reference)?
 - Are there numbered steps inside a concept? (They belong in a task.)
 - Are there marketing intros above a reference table? (Cut them or move to a concept.)
-- For Seqera guides/tutorials with prerequisites: are they in a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets (not a numbered list, not a plain `Prerequisites:` heading)? (Step 5; the `structure` skill's `references/prerequisites.md`.)
+- For Seqera guides/tutorials with prerequisites: are they in a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets (not a numbered list, not a plain `Prerequisites:` heading)? (Step 5; the `docs-structure` skill's `references/prerequisites.md`.)
 - Did you wrap a table around content that isn't a parallel-attribute lookup? Release notes, changelogs, and chronological lists are bulleted lists, not tables. (See `topic-types.md`.)
 - Are there em-dashes used as decorative pauses?
 - Are two clauses joined with ", so" (or ", which means", ", thus")? Split them or lead with the cause.
@@ -338,7 +338,7 @@ Read these as needed. Pull in the ones relevant to the topic type and the patter
 - `references/terminology.md` — **Seqera Platform-specific** terminology and formatting (product/tool names, lowercase feature nouns, pipeline vs workflow, run vs task, bold vs backticks, UI names, env vars)
 - `references/examples.md` — longer before/after passages across the topic types
 
-**Related skill:** for Seqera docs, two structural conventions are owned by the `structure` skill, and deslop must delegate both (Skill tool, `skill: "structure"`; see step 5 of the workflow): **prerequisites** (`references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets, never deslop's generic `Prerequisites:` heading) and **troubleshooting placement** (`references/troubleshooting.md`: inline troubleshooting moves off feature pages to the product's `troubleshooting_and_faqs/` pages with a pointer link left behind — even a single entry).
+**Related skill:** for Seqera docs, two structural conventions are owned by the `docs-structure` skill, and deslop must delegate both (Skill tool, `skill: "docs-structure"`; see step 5 of the workflow): **prerequisites** (`references/prerequisites.md`: a `:::info[**Prerequisites**]` admonition with a `You need the following:` lead-in and noun-phrase bullets, never deslop's generic `Prerequisites:` heading) and **troubleshooting placement** (`references/troubleshooting.md`: inline troubleshooting moves off feature pages to the product's `troubleshooting_and_faqs/` pages with a pointer link left behind — even a single entry).
 
 ## A note on judgment
 

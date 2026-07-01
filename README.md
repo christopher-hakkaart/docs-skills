@@ -6,27 +6,27 @@ A collection of Claude skills for technical documentation work. Each skill lives
 
 | Skill | Description |
 | --- | --- |
-| [deslop](skills/deslop/) | Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial). |
-| [structure](skills/structure/) | Applies Seqera docs house structural conventions to a page or selection. Each structural area (prerequisites, troubleshooting placement, …) has its own reference file. |
+| [docs-deslop](skills/docs-deslop/) | Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial). |
+| [docs-structure](skills/docs-structure/) | Applies Seqera docs house structural conventions to a page or selection. Each structural area (prerequisites, troubleshooting placement, …) has its own reference file. |
 
 ## Folder layout
 
 ```
 .
 ├── skills/                  # Skill sources, one directory per skill
-│   ├── deslop/              # The deslop skill
+│   ├── docs-deslop/         # The docs-deslop skill
 │   │   ├── SKILL.md         # Skill definition: trigger description + rewrite workflow
 │   │   ├── references/      # Rule catalogs loaded on demand (phrases, structures,
 │   │   │                    # style-guide, terminology, clarity, topic-types, examples)
 │   │   └── evals/           # Eval suite
 │   │       ├── evals.json   # 8 eval cases (schema and tiers below)
 │   │       └── test-inputs/ # Salted input docs for file-based testing
-│   ├── deslop.skill         # Packaged skill (zip of deslop/, minus evals) for claude.ai
-│   ├── structure/           # The structure skill
+│   ├── docs-deslop.skill    # Packaged skill (zip of docs-deslop/, minus evals) for claude.ai
+│   ├── docs-structure/      # The docs-structure skill
 │   │   ├── SKILL.md         # Skill definition: trigger + structural-area index
 │   │   └── references/      # One reference per structural area (prerequisites,
 │   │                        # troubleshooting, …)
-│   └── structure.skill      # Packaged skill (zip of structure/) for claude.ai
+│   └── docs-structure.skill # Packaged skill (zip of docs-structure/) for claude.ai
 ├── workspace/               # Eval harness and run artifacts
 │   ├── grade.py             # Substring/structure assertions for grading eval output
 │   ├── verify_evals.py      # Self-test: ideal rewrites pass, original slop fails
@@ -59,7 +59,7 @@ cd skills
 zip -r <name>.skill <name> -x "<name>/evals/*" "*/.DS_Store"
 ```
 
-## deslop
+## docs-deslop
 
 Rewrites technical product documentation to strip AI slop and conform to the CTRT topic-type model (Concept, Task, Reference, Troubleshooting, plus Tutorial).
 
@@ -68,7 +68,7 @@ Rewrites technical product documentation to strip AI slop and conform to the CTR
 Invoke it in a session, either explicitly:
 
 ```
-/deslop docs/getting-started.md
+/docs-deslop docs/getting-started.md
 ```
 
 or implicitly — the skill triggers on phrases like "deslop this", "make this doc less AI-sounding", "tighten my draft", or "rewrite this in CTRT", with pasted text or a file path (`.md`, `.mdx`, `.rst`, `.adoc`, `.txt`, `.docx`).
@@ -84,11 +84,11 @@ deslop runs as an aggressive in-place heavy rewrite by default. Two optional mod
 - **Passive mode** — light-touch. Applies only word- and sentence-level fixes (slop phrases, marketing language, voice, tense, punctuation, terminology) and leaves structure alone: no splitting topics, renaming titles, moving troubleshooting, or reshaping tables. Structural changes a full rewrite would make are instead listed in the change summary under a `Recommend (full mode):` block. Trigger with "passive", "light-touch", "words only", or "don't restructure".
 - **Verbose mode** — changes only the change summary, not what gets edited. Each significant edit is shown as a `before → after` pair grouped by the rule that triggered it, instead of grouped category counts. Trigger with "verbose", "explain each change", or "show before/after".
 
-The active mode is named on the first line of the change summary (`Mode: passive`, `Mode: verbose`, or `Mode: passive + verbose`). For the full spec, see the "Modes" section of [`skills/deslop/SKILL.md`](skills/deslop/SKILL.md).
+The active mode is named on the first line of the change summary (`Mode: passive`, `Mode: verbose`, or `Mode: passive + verbose`). For the full spec, see the "Modes" section of [`skills/docs-deslop/SKILL.md`](skills/docs-deslop/SKILL.md).
 
 ### Run the evals
 
-Each case in `skills/deslop/evals/evals.json` has an `id`, a `name`, the exact `prompt` handed to the skill (a salted doc plus the real facts the rewrite needs, so the model never invents technical content), an `expected_output` that names every rule a good rewrite satisfies, and `files` for file-based inputs (paths relative to `skills/deslop/evals/`).
+Each case in `skills/docs-deslop/evals/evals.json` has an `id`, a `name`, the exact `prompt` handed to the skill (a salted doc plus the real facts the rewrite needs, so the model never invents technical content), an `expected_output` that names every rule a good rewrite satisfies, and `files` for file-based inputs (paths relative to `skills/docs-deslop/evals/`).
 
 The suite is three tiers:
 
@@ -105,14 +105,14 @@ For a single case: open `evals.json`, copy a case's `prompt` into a session wher
 For the file-based case (eval 1) and ad-hoc testing, point the skill at a salted doc:
 
 ```
-/deslop skills/deslop/evals/test-inputs/troubleshooting.md
+/docs-deslop skills/docs-deslop/evals/test-inputs/troubleshooting.md
 ```
 
 #### Full run (Claude Code, subagent fan-out)
 
 Run each case in a fresh subagent so cases don't contaminate each other:
 
-1. For each eval, spawn an agent with the case's `prompt` (file paths in `files` are relative to `skills/deslop/evals/`) and instructions to read `skills/deslop/SKILL.md` first and follow it.
+1. For each eval, spawn an agent with the case's `prompt` (file paths in `files` are relative to `skills/docs-deslop/evals/`) and instructions to read `skills/docs-deslop/SKILL.md` first and follow it.
 2. Optionally run a **without-skill** twin of each case (same prompt, no SKILL.md) to measure the skill's lift over the base model.
 3. Collect each rewrite + change summary into a `workspace/results-<date>/` directory as `results.json` (a list of `{id, name, rewrite, summary}` entries).
 4. Grade with `workspace/grade.py` (substring/structure assertions), or review manually against `expected_output`.
@@ -132,23 +132,23 @@ scorecard and writes `grading.json` into the run directory. Originals for the pa
 evals are extracted from the fenced block in each prompt in `evals.json`; eval 1
 reads its test-input file. Run entries with no matching assertion set are skipped.
 
-## structure
+## docs-structure
 
-Applies Seqera docs house structural conventions to a page or a selected region — the structural, repeatable parts of a page, kept consistent across the docs. It is about structure, not prose; for wording and slop, use `deslop`. The two compose: when `deslop` runs on a Seqera page with prerequisites, it hands off to `structure`.
+Applies Seqera docs house structural conventions to a page or a selected region — the structural, repeatable parts of a page, kept consistent across the docs. It is about structure, not prose; for wording and slop, use `docs-deslop`. The two compose: when `docs-deslop` runs on a Seqera page with prerequisites, it hands off to `docs-structure`.
 
 ### Run the skill
 
 Invoke it explicitly:
 
 ```
-/structure docs/getting-started.md
+/docs-structure docs/getting-started.md
 ```
 
 or implicitly — the skill triggers on requests to format, clean up, standardize, or fix the structure of a docs page, or when writing a new guide/tutorial that must follow house format.
 
 ### Structural areas
 
-Each area has its own reference file under `skills/structure/references/`. The skill reads the reference for the area in scope and applies its spec.
+Each area has its own reference file under `skills/docs-structure/references/`. The skill reads the reference for the area in scope and applies its spec.
 
 | Area | Reference | Covers |
 | --- | --- | --- |

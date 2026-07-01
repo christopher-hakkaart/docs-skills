@@ -17,7 +17,7 @@ from pathlib import Path
 ITERATION = Path(__file__).parent / "results-2026-06-04"
 
 # Originals for the pasted evals come from the fenced block in each eval's prompt.
-EVALS_JSON = Path(__file__).parent.parent / "skills/deslop/evals/evals.json"
+EVALS_JSON = Path(__file__).parent.parent / "skills/docs-deslop/evals/evals.json"
 
 def absent(needles, cs=False):
     needles_n = needles if cs else [n.lower() for n in needles]
@@ -289,7 +289,7 @@ EVALS = {
 # File-based evals read their original from the test-input file; pasted evals
 # fall back to the fenced block extracted from their prompt in evals.json.
 INPUT_FILES = {
-    "eval-1-file-release-notes": str(Path(__file__).parent.parent / "skills/deslop/evals/test-inputs/release-notes.md"),
+    "eval-1-file-release-notes": str(Path(__file__).parent.parent / "skills/docs-deslop/evals/test-inputs/release-notes.md"),
 }
 
 def read(p):

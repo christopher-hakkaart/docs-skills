@@ -1,5 +1,5 @@
 ---
-name: structure
+name: docs-structure
 description: Apply Seqera docs house structural conventions to a documentation page or selection — page introductions, prerequisites, troubleshooting placement, admonitions, and other structural elements. Use when the user asks to format, clean up, standardize, restructure, or fix the structure of a docs page, or when writing a new guide/tutorial that needs to follow house format. Each structural area has its own reference file under references/.
 ---
 
@@ -13,8 +13,8 @@ how the introduction is written, how prerequisites are presented, which
 admonition syntax to use — so pages look and read consistently across the docs.
 
 This skill is about **structure**, not prose quality. To strip AI
-slop and tighten wording, use the `deslop` skill; the two compose (deslop owns
-voice and cuts, `structure` owns structure). When `deslop` runs on a Seqera page
+slop and tighten wording, use the `docs-deslop` skill; the two compose (deslop owns
+voice and cuts, `docs-structure` owns structure). When `docs-deslop` runs on a Seqera page
 with prerequisites or inline troubleshooting, it applies this skill's conventions.
 
 **Scope**: Seqera docs (`platform-cloud/`, `platform-enterprise_docs/`, versioned
@@ -23,6 +23,7 @@ docs, `fusion_docs/`, `wave_docs/`, `multiqc_docs/`). Markdown/MDX pages.
 ## When to use
 
 Use this skill when:
+
 - The user asks to format, clean up, standardize, or fix the structure of a page.
 - Writing a new guide or tutorial that must follow house format.
 - A page's structure drifts from house conventions (non-standard admonitions, a
@@ -33,8 +34,8 @@ Use this skill when:
 Each area has a reference file under `references/`. Read the reference for the
 area you're working on and apply its spec.
 
-| Area            | Reference                       | Covers                                                                       |
-| --------------- | ------------------------------- | ---------------------------------------------------------------------------- |
+| Area            | Reference                       | Covers                                                                        |
+| --------------- | ------------------------------- | ----------------------------------------------------------------------------- |
 | Prerequisites   | `references/prerequisites.md`   | The `:::info[**Prerequisites**]` admonition, lead-in, bullet phrasing         |
 | Troubleshooting | `references/troubleshooting.md` | Moving inline troubleshooting sections to the product's troubleshooting pages |
 
@@ -63,7 +64,7 @@ codify a new convention.)
 ## Important notes
 
 - **Format, not prose**: this skill standardizes structure. For wording and slop,
-  defer to `deslop`.
+  defer to `docs-deslop`.
 - **Surgical edits**: change only the regions the conventions govern.
 - **Preserve content**: never drop a prerequisite, link, anchor, or list item.
 - **Ask before overwriting** when a change involves a judgment call the user
