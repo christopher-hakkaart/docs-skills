@@ -16,8 +16,11 @@ A collection of Claude skills for technical documentation work. Each skill lives
 ├── skills/                  # Skill sources, one directory per skill
 │   ├── docs-deslop/         # The docs-deslop skill
 │   │   ├── SKILL.md         # Skill definition: trigger description + rewrite workflow
-│   │   ├── references/      # Rule catalogs loaded on demand (phrases, structures,
-│   │   │                    # style-guide, terminology, clarity, topic-types, examples)
+│   │   ├── references/
+│   │   │   ├── core/        # Core rule catalogs, loaded on demand (phrases, structures,
+│   │   │   │                # style-guide, clarity, terminology, topic-types, examples)
+│   │   │   └── products/    # Exclusive per-product rules (platform, nextflow, wave,
+│   │   │                    # fusion, multiqc); detected doc's file layers on top of core
 │   │   └── evals/           # Eval suite
 │   │       ├── evals.json   # 8 eval cases (schema and tiers below)
 │   │       └── test-inputs/ # Salted input docs for file-based testing
@@ -76,6 +79,12 @@ or implicitly — the skill triggers on phrases like "deslop this", "make this d
 #### Scope
 
 Technical documentation only: concept/task/reference/troubleshooting pages, runbooks, tutorials, release notes, product READMEs. The skill refuses marketing copy, blog posts, and social posts by design.
+
+### Core and product references
+
+The rewrite rules split into two layers. **Core references** (`references/core/*.md`: phrases, structures, style-guide, clarity, topic-types, examples, and `terminology.md`) apply to every doc — the anti-slop rules are fully product-agnostic, and `terminology.md` holds the shared Seqera terminology and formatting (product/tool names, feature-noun casing, pipeline vs workflow, bold vs backticks, UI names, env vars). **Product references** (`references/products/*.md`, one file per product) hold only the rules **exclusive** to each product — what isn't already in core `terminology.md`. They're additive: applied *on top of* the core set, never instead of it. Product files may reference other products.
+
+As step 2 of its workflow, the skill **detects the product** — from the file path (`platform-cloud/`, `fusion_docs/`, `wave_docs/`, `multiqc_docs/`, a Nextflow repo, …), the user's statement, or the doc's vocabulary — and loads that product's exclusive file on top of core `terminology.md`. If no product is detected, it applies the core references only. Because core `terminology.md` is already Platform-centric, `platform.md` is intentionally near-empty (a placeholder for Platform-exclusive extras); `nextflow.md` holds Nextflow's exclusive DSL/config rules; `wave.md`, `fusion.md`, and `multiqc.md` are scaffolds to grow from each product's docs. To add a product, add a file under `references/products/` and a row to the detection table in `SKILL.md`.
 
 ### Modes
 
