@@ -1,0 +1,11 @@
+- **Seqera Platform** · classified as **Reference** (release notes). Kept the release-note shape — a bulleted list of entries (change + magnitude + issue number), not a table.
+- Cut the marketing intro, the "What's New" preamble, and the "Conclusion" paragraph; replaced them with a one-line factual summary. Removed ~9 marketing adjectives/phrases (powerful, robust, comprehensive, cutting-edge, blazing fast, seamlessly, enterprise-grade, game-changer/quantum leap, "packed with exciting features").
+- Removed slop openers/hedges and sales verbs: "We're absolutely thrilled", "Let's dive into", "It's worth noting that", "worked tirelessly", "last but not least", "In today's ... landscape"; leverage/empower/harness/streamline → use/let/speed up.
+- Replaced every vague performance claim with the supplied specifics: run submission p99 12s → 4s on AWS Batch (#1842); Launchpad pipeline list now paginated, ~3x faster above 1000 pipelines (#1856); Data Explorer batches storage API calls instead of sequential (#1871).
+- Made Security concrete: SAML 2.0 and OIDC single sign-on, RBAC with 5 built-in roles plus custom roles, audit log to Amazon S3 with optional WORM retention. Spelled out abbreviations on first use (SAML, OIDC, RBAC, WORM).
+- Made Breaking changes actionable with the two real changes: `tw --token` removed (set `TOWER_ACCESS_TOKEN`); CLI default output now `table` (was JSON), set with `--output`. Added the migration-guide link. Put env var, flag, and format values in backticks.
+- Reduced length ~50% (about 380 → 190 words). Converted product-as-subject and future tense to active present tense.
+
+Dropped as unsupported (never-invent rule): the "Developer Experience" section's claims that the CLI was "streamlined," the API "enhanced," and docs "comprehensively updated" — no supporting facts were supplied, so they were removed rather than reworded. The concrete CLI changes were retained under Breaking changes.
+
+Flagged for review: the H1 title casing was corrected to sentence case (`Seqera Platform v24.1 release notes`). No frontmatter `title:` was present, so the body H1 was kept and renamed in place — if this page's title is supplied elsewhere (frontmatter/sidebar), remove the body H1 instead.

@@ -27,8 +27,9 @@ A collection of Claude skills for technical documentation work. Each skill lives
 │   ├── docs-deslop.skill    # Packaged skill (zip of docs-deslop/, minus evals) for claude.ai
 │   ├── docs-structure/      # The docs-structure skill
 │   │   ├── SKILL.md         # Skill definition: trigger + structural-area index
-│   │   └── references/      # One reference per structural area (prerequisites,
-│   │                        # troubleshooting, …)
+│   │   └── references/
+│   │       ├── core/        # Universal conventions (prerequisites, troubleshooting identify+format)
+│   │       └── products/    # Per-product troubleshooting placement (platform, fusion, wave, …)
 │   └── docs-structure.skill # Packaged skill (zip of docs-structure/) for claude.ai
 ├── workspace/               # Eval harness and run artifacts
 │   ├── grade.py             # Substring/structure assertions for grading eval output
@@ -157,11 +158,14 @@ or implicitly — the skill triggers on requests to format, clean up, standardiz
 
 ### Structural areas
 
-Each area has its own reference file under `skills/docs-structure/references/`. The skill reads the reference for the area in scope and applies its spec.
+References split into `core/` (universal — every product) and `products/` (per-product), mirroring `docs-deslop`. The skill reads the `core/` reference for the area in scope, plus the detected product's `products/` file for anything product-specific.
 
 | Area | Reference | Covers |
 | --- | --- | --- |
-| Prerequisites | `references/prerequisites.md` | The `:::info[**Prerequisites**]` admonition, `You need the following:` lead-in, noun-phrase bullets. |
-| Troubleshooting | `references/troubleshooting.md` | Moving inline troubleshooting sections to the product's `troubleshooting_and_faqs/` pages (new page or existing). |
+| Prerequisites | `references/core/prerequisites.md` | Universal. The `:::info[**Prerequisites**]` admonition, `You need the following:` lead-in, noun-phrase bullets. |
+| Troubleshooting (identify + format) | `references/core/troubleshooting.md` | Universal. What counts as troubleshooting content, how to format an entry, the move process. |
+| Troubleshooting placement | `references/products/<product>.md` | Product-specific. **Where** troubleshooting goes (destination, page-naming, existing-vs-new) — or that the product has none (MultiQC, Nextflow), so it stays inline. |
+
+Prerequisites is a house-wide convention (all products); troubleshooting placement is product-specific — its destination differs per product, and MultiQC/Nextflow have none. When `docs-deslop` invokes `docs-structure`, it passes the product it already detected.
 
 Add a row here and a reference file when you codify a new convention.
