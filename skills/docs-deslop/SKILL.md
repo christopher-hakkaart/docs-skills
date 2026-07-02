@@ -124,6 +124,8 @@ Apply the core `references/core/terminology.md` for every Seqera doc, then layer
 
 This step is mandatory, not optional polish — do not skip it because the section looks small, the page is "mostly fine", or you already read one of the `docs-structure` references. Read the applicable `docs-structure` reference files (the `core/` file, plus the detected product's `products/` file for a troubleshooting move) before deciding nothing needs to move. If the Skill tool is unavailable in the current environment, apply the conventions inline yourself as a fallback. Either way, report the conversions, moves, and any removed anchors in the change summary (artifact 2), extending it if it was already delivered.
 
+**A bare "nothing needs to move" is not enough.** Deciding the outcome from a surface read — without opening the references — is the failure this guards against, and it is invisible in the result because a correct "nothing to move" and an unchecked "nothing to move" look identical. So leave evidence the check ran: in the change summary, name the references you consulted (`core/prerequisites.md`, `core/troubleshooting.md`) and what you found (for example, "checked both: no `## Prerequisites` block and no symptom→cause→fix content; the `## Limitations` note stays inline per the troubleshooting rule"). If you can't cite what you found, you haven't done the step.
+
 **In passive mode**, this step is detect-and-recommend only: identify the prerequisites and inline troubleshooting that should be reformatted or moved, name them in the change summary as recommendations, but leave the content in place. Don't invoke the `docs-structure` skill to perform the moves (see [Modes](#modes)).
 
 ## The core rewrite rules
@@ -186,6 +188,8 @@ If a sentence is direct, specific, and active, leave it alone. If a paragraph re
 
 This skill is aggressive, so guard against over-correction: some precise words read like slop but aren't. Before swapping a word for a "plainer" one, check the okay list at the top of `references/core/phrases.md` — it names words (such as *augment*, *recommended*, *additional*) that earn their place and should not be replaced.
 
+**"Leave it alone" is a decision you make about a sentence you have read — never a license to skip a section unread.** Read every sentence, including bullet lists that state capabilities, benefits, or features, before judging any of it clean. A section that *looks* settled at a glance (a `## Benefits` list, an "On the X screen, you can:" capability list) is exactly where a stray sales verb (`streamline`, `leverage`), padding (`due to`, `various`), or a passive clause survives — because it reads as already-good and never gets scanned.
+
 ### 8. Never invent facts
 
 If you do not know what a flag, command, or term does, leave the original wording. Do not paraphrase technical content into vagueness. If a claim seems wrong, flag it in the change summary rather than silently fixing it.
@@ -196,13 +200,24 @@ Run these against **your rewritten output**, not the input — a heavy rewrite r
 
 Do this as a **plain read of every sentence**, not only a match against the word lists. The catalogs in `phrases.md` and `structures.md` are not exhaustive — colloquial verbs (`grab`, `spin up`, `hit`, `dig into`) and other informal register slip past a list-only scan. Read the whole file, **including admonition blocks** (`:::tip`, `:::note`, `:::info`), which are easy to skip because they look like settled asides.
 
+**Cover every section and every bullet list — not just the prose you already engaged with.** Before delivering, walk the file top to bottom and confirm you read each section and each list line by line. Targeted editing leaves blind spots: the zones most often skipped because they scan as clean are capability/benefit bullet lists (`## Benefits`, "On the X screen, you can:"), the frontmatter `description:`, and the final sections of a long page. A surviving `streamline`/`leverage`, a `due to`/`various`, or a passive clause almost always hides in a section you decided was fine without reading it. If your change summary claims a sweep ("fixed passive voice", "cut sales verbs"), every section must actually have been read — a spot-fix reported as a sweep is the failure this guards against.
+
+**Two kinds of check — and a grep only catches one.** Some checks below a scan or `grep` will find: leftover slop phrases, `, so` joins, semicolons, `will`/future tense, misspelled product names. Others produce **no keyword hit at all** and are invisible to a scan — you can only catch them by reading the output top-to-bottom with the checklist open:
+
+- the frontmatter `title:`/`description:` (were they actually **rewritten** per the title rules, or just preserved? — the default trap is to leave them untouched);
+- each heading against its **topic-type title rule** (`Overview`, `Limitations`, `-ing` titles read fine at a glance and pass a casing scan);
+- glossary candidates, contractions in reference prose, duplicate links, and local conventions like line-wrapping.
+
+A grep-only verification *structurally cannot* find these — it will feel complete while a whole class goes unchecked. So run the greppable checks by scanning, but run the rest as a deliberate read. **When a step is marked mandatory (step 6) or a check can't be grepped, do the work even when you think you already know the outcome** — reporting a conclusion you reached from a surface read, without doing the check, is the exact failure this section guards against. If you catch yourself writing "checked the headings" after only a casing scan, you have not checked the topic-type half.
+
 **In passive mode**, the structural checks below (classification split, renamed headings, body-H1 removal, marketing intros above tables, prerequisites reformat, table-vs-list reshape) become "did you *flag* this as a recommendation?" rather than "did you *do* it?" — passive mode reports the structural problem, it doesn't fix it. The word- and sentence-level checks (slop phrases, connectors, punctuation, voice, tense, terminology, abbreviations) apply unchanged. **In verbose mode**, also confirm Artifact 2 lists each significant edit as a before → after pair with its triggering rule.
 
 - Did you detect the product (step 2) and load its reference file, or confirm the doc is product-agnostic?
 - Did you classify each section into one of Concept / Task / Reference / Troubleshooting / Tutorial?
 - Did you actually deliver **both** artifacts — the rewritten text **and** the change summary (Artifact 2)? The summary is required every time, including short pasted snippets. Delivering the rewrite alone is an incomplete response.
 - For a file input, did you edit the original file in place (not create a separate copy)?
-- Did you preserve all non-prose exactly — frontmatter structure and machine-read values (`slug`, `id`, `tags`, `sidebar_position`, dates), `import`/`export` lines, JSX/MDX components, admonition markers, and code blocks? (The `title:`/`description:` *values* are prose and may be rewritten.)
+- Did you preserve all non-prose exactly — frontmatter structure and machine-read values (`slug`, `id`, `tags`, `sidebar_position`, dates), `import`/`export` lines, JSX/MDX components, admonition markers, and code blocks?
+- Did you **rewrite** the frontmatter `title:` and `description:` values per the title + anti-slop rules (sentence case, topic-type title shape, no marketing or `-ing` filler) — not merely preserve them? Leaving them byte-for-byte unchanged is the default trap: they are prose and in scope. Also **flag** any nonstandard or legacy frontmatter key (for example a bare `date:` where sibling pages use `date created`/`last updated`) rather than silently leaving it.
 - If you renamed any heading, did you flag it in the change summary so inbound anchor links (`page.md#old-anchor`) and in-page TOC links can be updated? (Renaming a heading changes its auto-generated anchor and breaks existing links to it.)
 - If the page title is supplied outside the body (frontmatter `title:`, or the user said the title supplies the H1), did you remove the body H1 instead of renaming it?
 - Did the change summary carry every **summary-only obligation**? These produce no visible change in the rewrite text, so they're easy to drop: glossary candidates for recurring undefined terms (`clarity.md`), any claim you dropped as unsupported (the never-invent rule), and renamed-heading anchor flags.
