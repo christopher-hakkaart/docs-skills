@@ -22,7 +22,7 @@ A collection of Claude skills for technical documentation work. Each skill lives
 │   │   │   └── products/    # Exclusive per-product rules (platform, nextflow, wave,
 │   │   │                    # fusion, multiqc); detected doc's file layers on top of core
 │   │   └── evals/           # Eval suite
-│   │       ├── evals.json   # 8 eval cases (schema and tiers below)
+│   │       ├── evals.json   # 10 eval cases (schema and tiers below)
 │   │       └── test-inputs/ # Salted input docs for file-based testing
 │   ├── docs-deslop.skill    # Packaged skill (zip of docs-deslop/, minus evals) for claude.ai
 │   ├── docs-structure/      # The docs-structure skill
@@ -100,11 +100,14 @@ The active mode is named on the first line of the change summary (`Mode: passive
 
 Each case in `skills/docs-deslop/evals/evals.json` has an `id`, a `name`, the exact `prompt` handed to the skill (a salted doc plus the real facts the rewrite needs, so the model never invents technical content), an `expected_output` that names every rule a good rewrite satisfies, and `files` for file-based inputs (paths relative to `skills/docs-deslop/evals/`).
 
-The suite is three tiers:
+The suite is four tiers:
 
 - **Tier 1 — integrated scenario (eval 1, `file-release-notes`)**: an end-to-end deslop that mixes rule families and is the only case exercising file read/write — it reads `test-inputs/release-notes.md` and writes a `.deslopped` copy.
-- **Tier 2 — rule-family coverage (evals 2–5)**: one salted document per reference file (or pair) — `phrases` (2), `structures` (3), `style-terminology-clarity` (4), `topic-types` (5). Collectively they cover every rule in `references/`, so the suite stays cheap to run.
-- **Tier 3 — mode coverage (evals 6–8)**: one case per mode behavior — `passive-mode-light-touch` (6) checks that word-level fixes apply while structural changes are flagged not made, `verbose-mode-before-after-summary` (7) checks the per-edit before/after summary format, and `passive-plus-verbose-combined` (8) checks the two modes compose (see [Modes](#modes)). These are graded manually against `expected_output`; `grade.py`'s assertions cover evals 1–5 only.
+- **Tier 2 — rule-family coverage (evals 2–5)**: one salted document per core reference file (or pair) — `phrases` (2), `structures` (3), `style-terminology-clarity` (4), `topic-types` (5). Collectively they cover every rule in `references/core/`, so the suite stays cheap to run.
+- **Tier 3 — mode coverage (evals 6–8)**: one case per mode behavior — `passive-mode-light-touch` (6) checks that word-level fixes apply while structural changes are flagged not made, `verbose-mode-before-after-summary` (7) checks the per-edit before/after summary format, and `passive-plus-verbose-combined` (8) checks the two modes compose (see [Modes](#modes)). These are graded manually against `expected_output`.
+- **Tier 4 — product coverage (evals 9–10)**: non-Platform products that guard product detection and the product-gated troubleshooting rule. `leave-inline-nextflow` (9) checks Nextflow detection, the `products/nextflow.md` DSL/dash rules, and that troubleshooting is **left inline** (Nextflow has no destination); `leave-inline-multiqc` (10) checks the same leave-inline behavior for MultiQC. Both guard the regression where troubleshooting would be moved off a page with nowhere to go.
+
+`grade.py`'s assertions cover evals 1–5 and 9–10; the mode cases (6–8) are reviewed manually against `expected_output`.
 
 `test-inputs/` also holds standalone salted docs covering each topic type (concept, task, CLI reference, troubleshooting, tutorial, runbook), usable for ad-hoc runs ("deslop this file") or for new file-based cases.
 
@@ -135,7 +138,7 @@ Run each case in a fresh subagent so cases don't contaminate each other:
 python3 workspace/verify_evals.py
 ```
 
-`grade.py` covers evals 1–5 (the integrated and rule-family cases) and grades the flat run layout: point its `ITERATION`
+`grade.py` covers evals 1–5 and 9–10 (the integrated, rule-family, and product-coverage cases) and grades the flat run layout: point its `ITERATION`
 constant at a `workspace/results-<date>/` directory containing `results.json` (a list
 of `{id, name, rewrite, summary}` entries) and run it. It prints a per-eval and overall
 scorecard and writes `grading.json` into the run directory. Originals for the pasted

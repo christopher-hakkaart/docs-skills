@@ -1,0 +1,7 @@
+- **MultiQC** · page mixed **Concept** + **Task** + **Troubleshooting** — split the intro (Concept) from the report-generation procedure (Task, `## Generate a report`) and kept the troubleshooting entry as its own typed section.
+- Corrected the product name to **MultiQC** in prose (was `multiqc`/`multiQC`) and kept the command `multiqc` lowercase in backticks (`products/multiqc.md` + core `terminology.md`); replaced the vague "on your analysis directory" with the concrete command `multiqc <analysis_directory>`.
+- Cut marketing and slop from the intro: `comprehensive`, `seamlessly`, and the self-referential opener "In this section, we'll explore how to generate a report."
+- Cut filler adverbs from the task prose: `simply` and `basically`.
+- Reformatted the troubleshooting entry per core rules: moved the error into an `Error:`-prefixed heading with the message in backticks (`No analysis results found`), and restructured the body as symptom → cause → numbered resolution ("This issue occurs when…" → `To resolve:` steps). Cut the chatty opener ("don't worry!") and the hedged cause ("It might be due to a variety of factors").
+- **Left the `## Troubleshooting` section inline** — MultiQC has no dedicated troubleshooting destination in this repo (`docs-structure` `products/multiqc.md`), so per step 6 the content is reformatted but not moved off-page and no `troubleshooting_and_faqs` destination was invented.
+- Renamed the H1 from `multiqc Reports` to `MultiQC reports` (noun/Concept title, sentence case) — flag the changed anchor for any inbound links.

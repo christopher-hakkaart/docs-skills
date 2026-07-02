@@ -131,9 +131,13 @@ A workspace groups the pipelines, compute environments, and credentials a team s
 
 Create a workspace to give a team a shared place for its pipelines, compute environments, and credentials.
 
-Prerequisites:
+:::info[**Prerequisites**]
+
+You need the following:
 
 - An organization.
+
+:::
 
 1. Go to the organization.
 2. Select **New**.
@@ -161,11 +165,15 @@ To resolve:
 
 In this tutorial, you set up an AWS Batch compute environment, launch the nf-core/rnaseq pipeline, and review the results. By the end, you have a completed rnaseq run.
 
-## Before you begin
+:::info[**Prerequisites**]
+
+You need the following:
 
 - A Seqera Platform account and workspace.
 - AWS credentials.
 - An S3 bucket for the work directory.
+
+:::
 
 ## Set up the compute environment
 
@@ -180,12 +188,52 @@ Launch the nf-core/rnaseq pipeline against the AWS Batch compute environment.
 Open the **Runs** tab to review the completed run.""",
 """- Split into four typed topics: **Concept** + **Task** (`Workspaces` / `Create a workspace`), **Reference** (`Workspace settings`), **Troubleshooting reference** (`Error: AccessDenied...`), and **Tutorial** (`Tutorial: Run nf-core/rnaseq on AWS Batch`).
 - Concept: renamed `Overview` to `Workspaces` (noun, per concept rules); replaced the vague "organize your work" definition with a specific one; cut the self-referential opener ("This overview will help you understand them") and the restating `## Summary` section.
-- Task: lifted the embedded numbered steps out of the concept into a `Create a workspace` task (active verb + noun); converted "You should make sure you have an organization" into a `Prerequisites:` list; rewrote "you navigate / you should click / you can enter" as imperative steps and added the missing final step `Select Add`; bolded the **New** and **Add** UI buttons.
+- Task: lifted the embedded numbered steps out of the concept into a `Create a workspace` task (active verb + noun); converted "You should make sure you have an organization" into a `:::info[**Prerequisites**]` admonition (the docs-structure Platform convention); rewrote "you navigate / you should click / you can enter" as imperative steps and added the missing final step `Select Add`; bolded the **New** and **Add** UI buttons.
 - Reference: renamed `Settings` to `Workspace settings`; converted prose rows into a four-column table; cut the editorializing ("really important to choose this carefully", "As mentioned, this matters for cost"); added defaults (region/workDir none, maxCpus `256`).
 - Troubleshooting: renamed `Launch problems` to the exact error message with an `Error:` prefix and backticks; cut "Don't worry!" and the hedge "a variety of factors"; restructured as symptom → cause → numbered resolution with the concrete `s3:PutObject` fix.
-- Tutorial: renamed the title to `Tutorial:` + active verb (was a hyphen-separated title-case marketing string); cut the "fast-paced world / exciting journey" opener and inflated stakes; added a goal sentence with the stated outcome; converted prerequisite prose into a `Before you begin` list; made each phase a `##` task section; cut the orphan `## More info` link-only section.
+- Tutorial: renamed the title to `Tutorial:` + active verb (was a hyphen-separated title-case marketing string); cut the "fast-paced world / exciting journey" opener and inflated stakes; added a goal sentence with the stated outcome; converted prerequisite prose into a `:::info[**Prerequisites**]` admonition (docs-structure Platform convention); made each phase a `##` task section; cut the orphan `## More info` link-only section.
 - Renamed every heading — flag for inbound anchor/TOC link updates.
 - Flagged for review: the troubleshooting and tutorial both involve AWS/S3 specifics but the source doc didn't confirm the exact **Compute Envs** tab flow; UI labels beyond **New**, **Add**, and **Runs** were not invented."""),
+    "eval-9-leave-inline-nextflow": (
+"""# Run Nextflow pipelines
+
+Nextflow is a workflow engine for running pipelines at scale. This page explains how to run and resume a pipeline.
+
+To launch a pipeline, use `nextflow run`. Set the input samplesheet with `--input` (a pipeline parameter — two dashes), resume a previous run with `-resume`, and select a config profile with `-profile` (core options take a single dash).
+
+The `workflow` block wires your processes together with channels.
+
+## Troubleshooting
+
+### Error: `Unable to acquire lock on session`
+
+This error occurs when another Nextflow run is using the same session directory (the `.nextflow` directory).
+
+To resolve, ensure no other run uses that directory, then re-run with `-resume`.""",
+"""- Detected product **Nextflow** (open-source docs); classified as a **Task** (run/resume) with an inline **Troubleshooting** entry.
+- Cut 8 slop items: marketing (powerful, cutting-edge), the sales verb (empowers), seamlessly, the self-referential opener, the "It's worth noting" hedge, "utilize" -> use, and the chatty troubleshooting opener ("Sometimes things go wrong", "don't worry", "a variety of factors").
+- Applied Nextflow rules (`products/nextflow.md`): NextFlow -> Nextflow; fixed 3 flags to the correct dash count and backticked them (`--input` parameter, `-resume`/`-profile` core options); backticked `nextflow run` and the `workflow` DSL keyword; corrected "pipeline block" to the `workflow` block.
+- Left the troubleshooting **inline**: Nextflow has no troubleshooting destination in this repo, so the section was NOT moved off-page and no destination path was invented. Reformatted the entry per the core rules (Error: heading with the message in backticks, symptom -> cause -> resolution).
+- Reduced length ~15%."""),
+    "eval-10-leave-inline-multiqc": (
+"""# MultiQC reports
+
+MultiQC aggregates results from many bioinformatics tools into a single report.
+
+To generate a report, run `multiqc <analysis_directory>`. MultiQC scans the directory for recognized log files and builds the report.
+
+## Troubleshooting
+
+### Error: `No analysis results found`
+
+This error occurs when MultiQC finds no recognized log files in the search path.
+
+To resolve, point `multiqc` at the directory containing your tool outputs, confirm the tools are supported, then re-run.""",
+"""- Detected product **MultiQC**; classified as a **Task** (generate a report) with an inline **Troubleshooting** entry.
+- Cut 6 slop items: "comprehensive", "seamlessly", the self-referential opener, 2 filler adverbs (simply, basically), and the chatty troubleshooting opener ("don't worry", "a variety of factors").
+- Applied MultiQC rules (`products/multiqc.md`): corrected the product name to **MultiQC** in prose (from "multiqc"/"multiQC") and kept the command `multiqc` lowercase in backticks.
+- Left the troubleshooting **inline**: MultiQC has no troubleshooting destination in this repo, so the section was NOT moved off-page and no destination path was invented. Reformatted the entry per the core rules (Error: heading with the message in backticks, symptom -> cause -> resolution).
+- Reduced length ~15%."""),
 }
 
 missing = set(grade.EVALS) - set(IDEALS)

@@ -49,6 +49,21 @@ def all_present(needles, name="all", cs=False):
         return True, f"All present: {needles}"
     return check
 
+def all_present_any(groups, name="facts", cs=False):
+    """Each group is a list of acceptable alternatives (e.g. digit vs spelled-out).
+    Passes only if every group has at least one alternative present."""
+    def check(rewrite, summary, original):
+        rl = rewrite if cs else rewrite.lower()
+        missing = []
+        for group in groups:
+            alts = group if cs else [g.lower() for g in group]
+            if not any(a in rl for a in alts):
+                missing.append(group[0])
+        if missing:
+            return False, f"Missing ({name}): {missing}"
+        return True, f"All {name} present"
+    return check
+
 def shorter_than_original():
     def check(rewrite, summary, original):
         rw = len(rewrite.split())
@@ -154,12 +169,12 @@ EVALS = {
              absent(["every user always", "nobody wants"])),
             ("Collapses the one-point dilution (fast/quick/speedy runs)",
              absent(["quick runs save", "speedy runs"])),
-            ("States the real retry behavior (3 times, exponential backoff, 30 seconds)",
-             all_present(["3 times", "exponential backoff", "30 seconds"], "retry facts")),
+            ("States the real retry behavior (3/three times, exponential backoff, 30 seconds)",
+             all_present_any([["3 times", "three times"], ["exponential backoff"], ["30 seconds"]], "retry facts")),
             ("States the quota-check behavior (vCPU quota, queues the run)",
              all_present(["vcpu quota", "queue"], "quota behavior")),
-            ("Keeps the token expiry and schema-restart facts (1 hour, restart)",
-             all_present(["1 hour", "restart"], "token/schema facts")),
+            ("Keeps the token expiry and schema-restart facts (1/one hour, restart)",
+             all_present_any([["1 hour", "one hour"], ["restart"]], "token/schema facts")),
             ("Removes the unicode arrow and decorative em-dash aside",
              absent(["→", "— yes, automatically —"])),
             ("Removes the semicolon join",
@@ -270,8 +285,8 @@ EVALS = {
              present(["tutorial:"], "Tutorial: prefix")),
             ("Removes the inflated tutorial title and journey framing",
              absent(["complete and exhaustive", "in today's", "embark", "exciting"])),
-            ("Includes a Before you begin section",
-             present(["before you begin"], "Before you begin")),
+            ("Uses the Seqera Platform prerequisites admonition for the tutorial",
+             present([":::info[**prerequisites**]", "you need the following"], "prerequisites admonition")),
             ("Uses active-verb tutorial section headings",
              all_present(["set up the compute environment", "review the"], "tutorial headings")),
             ("Uses an active-verb launch heading",
@@ -280,6 +295,62 @@ EVALS = {
              absent(["see the other page", "## more info"])),
             ("Summary names all five topic types",
              in_summary(["concept", "task", "reference", "troubleshooting", "tutorial"], "all five types")),
+            ("Change summary has bullets with counts",
+             summary_has_counts()),
+        ]
+    },
+    "eval-9-leave-inline-nextflow": {
+        "original_words": 131,
+        "assertions": [
+            ("Names the detected product (Nextflow) in the summary",
+             in_summary(["nextflow"], "product")),
+            ("Corrects the product name (NextFlow -> Nextflow)",
+             absent(["NextFlow"], cs=True)),
+            ("Uses the correct product name Nextflow",
+             present(["Nextflow"], "product name", cs=True)),
+            ("Fixes flags to the correct dash count, in backticks (`-resume`, `-profile`, `--input`)",
+             all_present(["`-resume", "`-profile", "`--input"], "flags")),
+            ("Removes the wrong quoted flag forms (\"-input\", \"--resume\")",
+             absent(['"-input"', '"--resume"'])),
+            ("Backticks the run command and the workflow DSL keyword",
+             all_present(["`nextflow run`", "`workflow`"], "code identifiers")),
+            ("Corrects 'pipeline block' to the workflow block",
+             absent(["pipeline block"])),
+            ("Removes slop (marketing, sales verbs, meta, hedges, chatty opener)",
+             absent(["powerful", "cutting-edge", "empower", "seamless", "in this section", "it's worth noting", "utilize", "don't worry", "a variety of factors", "sometimes things go wrong"])),
+            ("Leaves the troubleshooting entry inline (error still on the page)",
+             present(["unable to acquire lock on session"], "inline error")),
+            ("Does not invent a troubleshooting_and_faqs destination",
+             absent(["troubleshooting_and_faqs"])),
+            ("Reformats the inline entry with an Error: heading",
+             present(["error:"], "Error prefix")),
+            ("Summary states the troubleshooting was left inline",
+             in_summary(["inline"], "left-inline note")),
+            ("Change summary has bullets with counts",
+             summary_has_counts()),
+        ]
+    },
+    "eval-10-leave-inline-multiqc": {
+        "original_words": 85,
+        "assertions": [
+            ("Names the detected product (MultiQC) in the summary",
+             in_summary(["multiqc"], "product")),
+            ("Uses the correct product name MultiQC in prose",
+             present(["MultiQC"], "product name", cs=True)),
+            ("Removes the wrong casing multiQC",
+             absent(["multiQC"], cs=True)),
+            ("Keeps the command `multiqc` lowercase in backticks",
+             present(["`multiqc"], "backticked command")),
+            ("Removes slop (marketing, meta, adverbs, chatty opener)",
+             absent(["comprehensive", "seamless", "in this section", "simply", "basically", "don't worry", "a variety of factors"])),
+            ("Leaves the troubleshooting entry inline (error still on the page)",
+             present(["no analysis results found"], "inline error")),
+            ("Does not invent a troubleshooting_and_faqs destination",
+             absent(["troubleshooting_and_faqs"])),
+            ("Reformats the inline entry with an Error: heading",
+             present(["error:"], "Error prefix")),
+            ("Summary states the troubleshooting was left inline",
+             in_summary(["inline"], "left-inline note")),
             ("Change summary has bullets with counts",
              summary_has_counts()),
         ]

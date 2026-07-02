@@ -141,9 +141,9 @@
   },
   "eval-3-structures-rule-family": {
     "summary": {
-      "pass_rate": 0.8888888888888888,
-      "passed": 16,
-      "failed": 2,
+      "pass_rate": 1.0,
+      "passed": 18,
+      "failed": 0,
       "total": 18
     },
     "expectations": [
@@ -183,9 +183,9 @@
         "evidence": "Not present in rewrite"
       },
       {
-        "text": "States the real retry behavior (3 times, exponential backoff, 30 seconds)",
-        "passed": false,
-        "evidence": "Missing: ['3 times']"
+        "text": "States the real retry behavior (3/three times, exponential backoff, 30 seconds)",
+        "passed": true,
+        "evidence": "All retry facts present"
       },
       {
         "text": "States the quota-check behavior (vCPU quota, queues the run)",
@@ -193,9 +193,9 @@
         "evidence": "All present: ['vcpu quota', 'queue']"
       },
       {
-        "text": "Keeps the token expiry and schema-restart facts (1 hour, restart)",
-        "passed": false,
-        "evidence": "Missing: ['1 hour']"
+        "text": "Keeps the token expiry and schema-restart facts (1/one hour, restart)",
+        "passed": true,
+        "evidence": "All token/schema facts present"
       },
       {
         "text": "Removes the unicode arrow and decorative em-dash aside",
@@ -391,9 +391,9 @@
   },
   "eval-5-topic-types-rule-family": {
     "summary": {
-      "pass_rate": 0.95,
-      "passed": 19,
-      "failed": 1,
+      "pass_rate": 1.0,
+      "passed": 20,
+      "failed": 0,
       "total": 20
     },
     "expectations": [
@@ -468,9 +468,9 @@
         "evidence": "Not present in rewrite"
       },
       {
-        "text": "Includes a Before you begin section",
-        "passed": false,
-        "evidence": "None of Before you begin found"
+        "text": "Uses the Seqera Platform prerequisites admonition for the tutorial",
+        "passed": true,
+        "evidence": "Found: [':::info[**prerequisites**]', 'you need the following']"
       },
       {
         "text": "Uses active-verb tutorial section headings",
@@ -496,6 +496,141 @@
         "text": "Change summary has bullets with counts",
         "passed": true,
         "evidence": "13 bullets, 5 with counts/numbers"
+      }
+    ]
+  },
+  "eval-9-leave-inline-nextflow": {
+    "summary": {
+      "pass_rate": 0.9230769230769231,
+      "passed": 12,
+      "failed": 1,
+      "total": 13
+    },
+    "expectations": [
+      {
+        "text": "Names the detected product (Nextflow) in the summary",
+        "passed": true,
+        "evidence": "In summary: ['nextflow']"
+      },
+      {
+        "text": "Corrects the product name (NextFlow -> Nextflow)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Uses the correct product name Nextflow",
+        "passed": true,
+        "evidence": "Found: ['Nextflow']"
+      },
+      {
+        "text": "Fixes flags to the correct dash count, in backticks (`-resume`, `-profile`, `--input`)",
+        "passed": true,
+        "evidence": "All present: ['`-resume', '`-profile', '`--input']"
+      },
+      {
+        "text": "Removes the wrong quoted flag forms (\"-input\", \"--resume\")",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Backticks the run command and the workflow DSL keyword",
+        "passed": true,
+        "evidence": "All present: ['`nextflow run`', '`workflow`']"
+      },
+      {
+        "text": "Corrects 'pipeline block' to the workflow block",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Removes slop (marketing, sales verbs, meta, hedges, chatty opener)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Leaves the troubleshooting entry inline (error still on the page)",
+        "passed": true,
+        "evidence": "Found: ['unable to acquire lock on session']"
+      },
+      {
+        "text": "Does not invent a troubleshooting_and_faqs destination",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Reformats the inline entry with an Error: heading",
+        "passed": true,
+        "evidence": "Found: ['error:']"
+      },
+      {
+        "text": "Summary states the troubleshooting was left inline",
+        "passed": true,
+        "evidence": "In summary: ['inline']"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": false,
+        "evidence": "only 7 bullets, 1 with numbers"
+      }
+    ]
+  },
+  "eval-10-leave-inline-multiqc": {
+    "summary": {
+      "pass_rate": 1.0,
+      "passed": 10,
+      "failed": 0,
+      "total": 10
+    },
+    "expectations": [
+      {
+        "text": "Names the detected product (MultiQC) in the summary",
+        "passed": true,
+        "evidence": "In summary: ['multiqc']"
+      },
+      {
+        "text": "Uses the correct product name MultiQC in prose",
+        "passed": true,
+        "evidence": "Found: ['MultiQC']"
+      },
+      {
+        "text": "Removes the wrong casing multiQC",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Keeps the command `multiqc` lowercase in backticks",
+        "passed": true,
+        "evidence": "Found: ['`multiqc']"
+      },
+      {
+        "text": "Removes slop (marketing, meta, adverbs, chatty opener)",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Leaves the troubleshooting entry inline (error still on the page)",
+        "passed": true,
+        "evidence": "Found: ['no analysis results found']"
+      },
+      {
+        "text": "Does not invent a troubleshooting_and_faqs destination",
+        "passed": true,
+        "evidence": "Not present in rewrite"
+      },
+      {
+        "text": "Reformats the inline entry with an Error: heading",
+        "passed": true,
+        "evidence": "Found: ['error:']"
+      },
+      {
+        "text": "Summary states the troubleshooting was left inline",
+        "passed": true,
+        "evidence": "In summary: ['inline']"
+      },
+      {
+        "text": "Change summary has bullets with counts",
+        "passed": true,
+        "evidence": "7 bullets, 2 with counts/numbers"
       }
     ]
   }
